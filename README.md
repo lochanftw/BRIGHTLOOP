@@ -30,7 +30,7 @@ All 12 architecture, flow, review, and verification documents are available in b
 
 ---
 
-## The Five International FinTech Novelties
+## The Five International FinTech Noveltie
 
 1. **Chronos™ Interactive Billing Time-Machine**  
    Embedded timeline scrubber allowing finance admins and customers to simulate future billing cycles (+1, +3, +6, and +12 cycles). Computes exact future invoice dates, tax cascades, proration adjustments, and projected Total Contract Value (TCV).
