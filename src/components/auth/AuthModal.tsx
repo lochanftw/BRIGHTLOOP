@@ -49,7 +49,7 @@ export function AuthModal() {
       if (!res.ok) throw new Error(data.error || 'Failed to sign in');
 
       switchPersona(data.user.role, data.user);
-      showToast(`Welcome back, ${data.user.fullName}!`, 'success');
+      showToast(`AUTHENTICATED: WELCOME ${data.user.fullName.toUpperCase()}!`, 'success');
       setOpenAuthModal(false);
     } catch (err: unknown) {
       setErrorMessage(err instanceof Error ? err.message : 'Login failed');
@@ -61,7 +61,7 @@ export function AuthModal() {
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!isPasswordValid) {
-      setErrorMessage('Please ensure your password satisfies all 4 security criteria.');
+      setErrorMessage('Please satisfy all 4 security criteria.');
       return;
     }
     setLoading(true);
@@ -76,7 +76,7 @@ export function AuthModal() {
       if (!res.ok) throw new Error(data.error || 'Sign-up failed');
 
       switchPersona('CUSTOMER', data.user);
-      showToast(`Account created for ${data.user.fullName}! Switched to Customer Portal.`, 'success');
+      showToast(`ACCOUNT REGISTERED FOR ${data.user.fullName.toUpperCase()}!`, 'success');
       setOpenAuthModal(false);
     } catch (err: unknown) {
       setErrorMessage(err instanceof Error ? err.message : 'Sign-up failed');
@@ -99,10 +99,10 @@ export function AuthModal() {
       if (!res.ok) throw new Error(data.error || 'Reset request failed');
 
       await refreshOutbox();
-      showToast('Reset email sent! Check the Simulated Email Outbox in the top bar.', 'info');
+      showToast('RESET TOKEN DISPATCHED TO SIMULATED OUTBOX!', 'info');
       setResetToken(data.token);
       setAuthModalMode('RESET');
-      setOpenOutbox(true); // Automatically open the outbox so evaluator can see and click!
+      setOpenOutbox(true);
     } catch (err: unknown) {
       setErrorMessage(err instanceof Error ? err.message : 'Request failed');
     } finally {
@@ -127,7 +127,7 @@ export function AuthModal() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Password update failed');
 
-      showToast('Password successfully reset! You can now sign in.', 'success');
+      showToast('PASSWORD SUCCESSFULLY UPDATED! PROCEED TO SIGN IN.', 'success');
       setAuthModalMode('SIGNIN');
       setPassword('');
     } catch (err: unknown) {
@@ -138,87 +138,87 @@ export function AuthModal() {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm">
-      <div className="w-full max-w-md bg-slate-950 border border-slate-800 rounded-2xl shadow-2xl overflow-hidden p-6 relative">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-md font-['Roboto_Condensed']">
+      <div className="w-full max-w-md bg-[#000000] border-4 border-[#cc0000] shadow-2xl p-6 relative">
         <button
           onClick={() => setOpenAuthModal(false)}
-          className="absolute top-4 right-4 p-1.5 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-slate-100"
+          className="absolute top-4 right-4 p-1 hover:bg-[#1a1a1a] text-[#6b6b6b] hover:text-white"
         >
-          <X className="w-5 h-5" />
+          <X className="w-6 h-6" />
         </button>
 
         {/* Title */}
         <div className="mb-6">
           <div className="flex items-center gap-2 mb-2">
-            <div className="p-1.5 bg-emerald-950/80 border border-emerald-500/40 rounded-lg">
-              <ShieldCheck className="w-5 h-5 text-emerald-400" />
+            <div className="p-1.5 bg-[#cc0000] text-white">
+              <ShieldCheck className="w-5 h-5" />
             </div>
-            <span className="text-xs uppercase font-mono font-semibold tracking-wider text-emerald-400">
-              Brightloop Security & Identity
+            <span className="text-xs uppercase font-['Bebas_Neue'] tracking-widest text-[#cc0000]">
+              BRIGHTLOOP SECURITY &bull; IDENTITY FORTRESS
             </span>
           </div>
 
-          <h2 className="text-xl font-bold text-slate-100">
-            {authModalMode === 'SIGNIN' && 'Sign In to Brightloop OS'}
-            {authModalMode === 'SIGNUP' && 'Create Customer Account'}
-            {authModalMode === 'FORGOT' && 'Reset Your Password'}
-            {authModalMode === 'RESET' && 'Set New Password'}
+          <h2 className="text-3xl font-['Bebas_Neue'] tracking-wider text-white uppercase">
+            {authModalMode === 'SIGNIN' && 'SIGN IN TO COMMAND'}
+            {authModalMode === 'SIGNUP' && 'REGISTER CUSTOMER CADRE'}
+            {authModalMode === 'FORGOT' && 'RESET PASSWORD TOKEN'}
+            {authModalMode === 'RESET' && 'FORGE NEW COMPLIANT PASSWORD'}
           </h2>
-          <p className="text-xs text-slate-400 mt-1">
-            {authModalMode === 'SIGNIN' && 'Enter your credentials or use the Persona Switcher in the top bar.'}
-            {authModalMode === 'SIGNUP' && 'Evaluates strict email uniqueness and high-entropy password requirements.'}
-            {authModalMode === 'FORGOT' && 'Generates a time-limited token dispatched to the Simulated Outbox.'}
-            {authModalMode === 'RESET' && 'Token verified. Create a compliant password.'}
+          <p className="text-xs text-[#f2f0eb] mt-1 font-mono">
+            {authModalMode === 'SIGNIN' && 'Enter credentials or use the Persona Switcher in the top bar.'}
+            {authModalMode === 'SIGNUP' && 'Enforces strict email uniqueness and high-entropy password requirements.'}
+            {authModalMode === 'FORGOT' && 'Dispatches single-use token to the Simulated Email Outbox Drawer.'}
+            {authModalMode === 'RESET' && 'Token verified. Specify high-entropy password.'}
           </p>
         </div>
 
         {errorMessage && (
-          <div className="mb-4 p-3 rounded-lg bg-rose-950/50 border border-rose-500/30 text-rose-300 text-xs">
+          <div className="mb-4 p-3 bg-[#cc0000] text-white font-mono text-xs uppercase font-bold">
             {errorMessage}
           </div>
         )}
 
-        {/* Form */}
+        {/* Forms */}
         {authModalMode === 'SIGNIN' && (
-          <form onSubmit={handleSignIn} className="space-y-4">
+          <form onSubmit={handleSignIn} className="space-y-4 font-mono text-xs">
             <div>
-              <label className="block text-xs font-medium text-slate-300 mb-1">Email Address</label>
+              <label className="block text-[#f2f0eb] uppercase mb-1">EMAIL ADDRESS</label>
               <div className="relative">
-                <Mail className="w-4 h-4 text-slate-500 absolute left-3 top-3" />
+                <Mail className="w-4 h-4 text-[#6b6b6b] absolute left-3 top-3" />
                 <input
                   type="email"
                   required
                   placeholder="name@company.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-9 pr-3 py-2 bg-slate-900 border border-slate-800 rounded-lg text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+                  className="w-full pl-9 pr-3 py-2 bg-[#1a1a1a] border border-[#2d2d2d] text-sm text-white placeholder-[#6b6b6b] focus:outline-none focus:border-[#cc0000]"
                 />
               </div>
             </div>
 
             <div>
               <div className="flex items-center justify-between mb-1">
-                <label className="text-xs font-medium text-slate-300">Password</label>
+                <label className="text-[#f2f0eb] uppercase">PASSWORD</label>
                 <button
                   type="button"
                   onClick={() => {
                     setErrorMessage('');
                     setAuthModalMode('FORGOT');
                   }}
-                  className="text-xs text-emerald-400 hover:underline"
+                  className="text-xs text-[#cc0000] font-['Bebas_Neue'] tracking-wider hover:underline"
                 >
-                  Forgot password?
+                  FORGOT PASSWORD?
                 </button>
               </div>
               <div className="relative">
-                <Lock className="w-4 h-4 text-slate-500 absolute left-3 top-3" />
+                <Lock className="w-4 h-4 text-[#6b6b6b] absolute left-3 top-3" />
                 <input
                   type="password"
                   required
                   placeholder="••••••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-9 pr-3 py-2 bg-slate-900 border border-slate-800 rounded-lg text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+                  className="w-full pl-9 pr-3 py-2 bg-[#1a1a1a] border border-[#2d2d2d] text-sm text-white placeholder-[#6b6b6b] focus:outline-none focus:border-[#cc0000]"
                 />
               </div>
             </div>
@@ -226,13 +226,15 @@ export function AuthModal() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-2.5 px-4 bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-sm rounded-lg flex items-center justify-center gap-2 transition-colors disabled:opacity-50"
+              className="con-btn w-full !py-3 text-sm font-bold disabled:opacity-50"
             >
-              {loading ? 'Authenticating...' : 'Sign In'}
-              <ArrowRight className="w-4 h-4" />
+              <span>
+                {loading ? 'AUTHENTICATING...' : 'ENTER BRIGHTLOOP OS'}
+                <ArrowRight className="w-4 h-4 ml-1.5" />
+              </span>
             </button>
 
-            <div className="pt-2 text-center text-xs text-slate-400">
+            <div className="pt-2 text-center text-xs text-[#6b6b6b]">
               Need a customer account?{' '}
               <button
                 type="button"
@@ -240,180 +242,168 @@ export function AuthModal() {
                   setErrorMessage('');
                   setAuthModalMode('SIGNUP');
                 }}
-                className="text-emerald-400 font-semibold hover:underline"
+                className="text-[#cc0000] font-bold font-['Bebas_Neue'] tracking-wider hover:underline text-sm ml-1"
               >
-                Sign Up
+                SIGN UP
               </button>
             </div>
           </form>
         )}
 
         {authModalMode === 'SIGNUP' && (
-          <form onSubmit={handleSignUp} className="space-y-3.5">
+          <form onSubmit={handleSignUp} className="space-y-3.5 font-mono text-xs">
             <div>
-              <label className="block text-xs font-medium text-slate-300 mb-1">Full Name</label>
-              <div className="relative">
-                <UserIcon className="w-4 h-4 text-slate-500 absolute left-3 top-3" />
-                <input
-                  type="text"
-                  required
-                  placeholder="Elena Rostova"
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                  className="w-full pl-9 pr-3 py-2 bg-slate-900 border border-slate-800 rounded-lg text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500"
-                />
-              </div>
+              <label className="block text-[#f2f0eb] uppercase mb-1">FULL NAME</label>
+              <input
+                type="text"
+                required
+                placeholder="Elena Rostova"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                className="w-full px-3 py-2 bg-[#1a1a1a] border border-[#2d2d2d] text-sm text-white placeholder-[#6b6b6b] focus:outline-none focus:border-[#cc0000]"
+              />
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-slate-300 mb-1">Company / Organization</label>
-              <div className="relative">
-                <Building className="w-4 h-4 text-slate-500 absolute left-3 top-3" />
-                <input
-                  type="text"
-                  placeholder="Acme Innovations Ltd"
-                  value={companyName}
-                  onChange={(e) => setCompanyName(e.target.value)}
-                  className="w-full pl-9 pr-3 py-2 bg-slate-900 border border-slate-800 rounded-lg text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500"
-                />
-              </div>
+              <label className="block text-[#f2f0eb] uppercase mb-1">ORGANIZATION</label>
+              <input
+                type="text"
+                placeholder="Acme Innovations Ltd"
+                value={companyName}
+                onChange={(e) => setCompanyName(e.target.value)}
+                className="w-full px-3 py-2 bg-[#1a1a1a] border border-[#2d2d2d] text-sm text-white placeholder-[#6b6b6b] focus:outline-none focus:border-[#cc0000]"
+              />
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-slate-300 mb-1">Corporate Email Address</label>
-              <div className="relative">
-                <Mail className="w-4 h-4 text-slate-500 absolute left-3 top-3" />
-                <input
-                  type="email"
-                  required
-                  placeholder="elena@acme.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-9 pr-3 py-2 bg-slate-900 border border-slate-800 rounded-lg text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500"
-                />
-              </div>
+              <label className="block text-[#f2f0eb] uppercase mb-1">EMAIL ADDRESS</label>
+              <input
+                type="email"
+                required
+                placeholder="elena@acme.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full px-3 py-2 bg-[#1a1a1a] border border-[#2d2d2d] text-sm text-white placeholder-[#6b6b6b] focus:outline-none focus:border-[#cc0000]"
+              />
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-slate-300 mb-1">Password</label>
-              <div className="relative">
-                <Lock className="w-4 h-4 text-slate-500 absolute left-3 top-3" />
-                <input
-                  type="password"
-                  required
-                  placeholder="Brightloop@2026"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-9 pr-3 py-2 bg-slate-900 border border-slate-800 rounded-lg text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500"
-                />
-              </div>
+              <label className="block text-[#f2f0eb] uppercase mb-1">PASSWORD POLICY VALIDATOR</label>
+              <input
+                type="password"
+                required
+                placeholder="BrightloopPass@2026"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-3 py-2 bg-[#1a1a1a] border border-[#2d2d2d] text-sm text-white placeholder-[#6b6b6b] focus:outline-none focus:border-[#cc0000]"
+              />
               <PasswordStrengthMeter password={password} onValidChange={setIsPasswordValid} />
             </div>
 
             <button
               type="submit"
               disabled={loading || !isPasswordValid}
-              className="w-full mt-2 py-2.5 px-4 bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-sm rounded-lg flex items-center justify-center gap-2 transition-colors disabled:opacity-50"
+              className="con-btn w-full !py-3 text-sm font-bold disabled:opacity-50 mt-2"
             >
-              {loading ? 'Creating Account...' : 'Register Customer Account'}
-              <ArrowRight className="w-4 h-4" />
+              <span>
+                {loading ? 'REGISTERING...' : 'REGISTER CUSTOMER CADRE'}
+                <ArrowRight className="w-4 h-4 ml-1.5" />
+              </span>
             </button>
 
-            <div className="pt-2 text-center text-xs text-slate-400">
-              Already have an account?{' '}
+            <div className="pt-2 text-center text-xs text-[#6b6b6b]">
+              Already registered?{' '}
               <button
                 type="button"
                 onClick={() => {
                   setErrorMessage('');
                   setAuthModalMode('SIGNIN');
                 }}
-                className="text-emerald-400 font-semibold hover:underline"
+                className="text-[#cc0000] font-bold font-['Bebas_Neue'] tracking-wider hover:underline text-sm ml-1"
               >
-                Sign In
+                SIGN IN
               </button>
             </div>
           </form>
         )}
 
         {authModalMode === 'FORGOT' && (
-          <form onSubmit={handleForgotPassword} className="space-y-4">
+          <form onSubmit={handleForgotPassword} className="space-y-4 font-mono text-xs">
             <div>
-              <label className="block text-xs font-medium text-slate-300 mb-1">Registered Account Email</label>
-              <div className="relative">
-                <Mail className="w-4 h-4 text-slate-500 absolute left-3 top-3" />
-                <input
-                  type="email"
-                  required
-                  placeholder="billing@acmecorp.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-9 pr-3 py-2 bg-slate-900 border border-slate-800 rounded-lg text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500"
-                />
-              </div>
+              <label className="block text-[#f2f0eb] uppercase mb-1">REGISTERED EMAIL</label>
+              <input
+                type="email"
+                required
+                placeholder="billing@acmecorp.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full px-3 py-2 bg-[#1a1a1a] border border-[#2d2d2d] text-sm text-white placeholder-[#6b6b6b] focus:outline-none focus:border-[#cc0000]"
+              />
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-2.5 px-4 bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-sm rounded-lg flex items-center justify-center gap-2 transition-colors disabled:opacity-50"
+              className="con-btn w-full !py-3 text-sm font-bold disabled:opacity-50"
             >
-              {loading ? 'Dispatching Token...' : 'Send Password Reset Email'}
-              <ArrowRight className="w-4 h-4" />
+              <span>
+                {loading ? 'DISPATCHING TOKEN...' : 'DISPATCH RESET TOKEN'}
+                <ArrowRight className="w-4 h-4 ml-1.5" />
+              </span>
             </button>
 
-            <div className="pt-2 text-center text-xs text-slate-400">
-              Remembered your password?{' '}
+            <div className="pt-2 text-center text-xs text-[#6b6b6b]">
+              Remembered credentials?{' '}
               <button
                 type="button"
                 onClick={() => {
                   setErrorMessage('');
                   setAuthModalMode('SIGNIN');
                 }}
-                className="text-emerald-400 font-semibold hover:underline"
+                className="text-[#cc0000] font-bold font-['Bebas_Neue'] tracking-wider hover:underline text-sm ml-1"
               >
-                Back to Sign In
+                BACK TO SIGN IN
               </button>
             </div>
           </form>
         )}
 
         {authModalMode === 'RESET' && (
-          <form onSubmit={handleResetPassword} className="space-y-3.5">
+          <form onSubmit={handleResetPassword} className="space-y-3.5 font-mono text-xs">
             <div>
-              <label className="block text-xs font-medium text-slate-300 mb-1">Reset Token</label>
+              <label className="block text-[#f2f0eb] uppercase mb-1">RESET TOKEN</label>
               <input
                 type="text"
                 required
                 value={resetToken}
                 onChange={(e) => setResetToken(e.target.value)}
                 placeholder="rst_xxxx"
-                className="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-lg text-xs font-mono text-emerald-400 focus:outline-none focus:border-emerald-500"
+                className="w-full px-3 py-2 bg-[#1a1a1a] border border-[#2d2d2d] text-xs font-mono text-[#cc0000] font-bold focus:outline-none focus:border-[#cc0000]"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-slate-300 mb-1">New Compliant Password</label>
-              <div className="relative">
-                <Lock className="w-4 h-4 text-slate-500 absolute left-3 top-3" />
-                <input
-                  type="password"
-                  required
-                  placeholder="NewSecurePass@2026"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-9 pr-3 py-2 bg-slate-900 border border-slate-800 rounded-lg text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500"
-                />
-              </div>
+              <label className="block text-[#f2f0eb] uppercase mb-1">NEW COMPLIANT PASSWORD</label>
+              <input
+                type="password"
+                required
+                placeholder="NewSecurePass@2026"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-3 py-2 bg-[#1a1a1a] border border-[#2d2d2d] text-sm text-white placeholder-[#6b6b6b] focus:outline-none focus:border-[#cc0000]"
+              />
               <PasswordStrengthMeter password={password} onValidChange={setIsPasswordValid} />
             </div>
 
             <button
               type="submit"
               disabled={loading || !isPasswordValid || !resetToken}
-              className="w-full py-2.5 px-4 bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-sm rounded-lg flex items-center justify-center gap-2 transition-colors disabled:opacity-50"
+              className="con-btn w-full !py-3 text-sm font-bold disabled:opacity-50 mt-2"
             >
-              {loading ? 'Updating Password...' : 'Save New Password & Sign In'}
-              <ArrowRight className="w-4 h-4" />
+              <span>
+                {loading ? 'COMMITTING...' : 'FORGE NEW PASSWORD'}
+                <ArrowRight className="w-4 h-4 ml-1.5" />
+              </span>
             </button>
           </form>
         )}
@@ -421,4 +411,3 @@ export function AuthModal() {
     </div>
   );
 }
-

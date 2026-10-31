@@ -15,7 +15,7 @@ import { CatalogView } from '@/components/views/CatalogView';
 import { StaffView } from '@/components/views/StaffView';
 import { CustomerPortalView } from '@/components/views/CustomerPortalView';
 
-import { Zap, ShieldCheck, CheckCircle2, AlertCircle, Info } from 'lucide-react';
+import { Zap, ShieldCheck, CheckCircle2, AlertCircle, Info, Flame } from 'lucide-react';
 
 export default function Home() {
   const { currentUser, toast, showToast, setQueryLatencyMs } = useAuth();
@@ -31,7 +31,7 @@ export default function Home() {
     }
   }, [currentUser.role]);
 
-  // High-Volume Benchmark Trigger (Scene 7 & Phase 6)
+  // High-Volume Benchmark Trigger
   const handleBenchmarkRun = async () => {
     setIsBenchmarking(true);
     const start = performance.now();
@@ -48,7 +48,7 @@ export default function Home() {
       setQueryLatencyMs(parseFloat(elapsed));
 
       showToast(
-        `High-Volume Benchmark Pass: Seeded 2,500 Subscriptions & 5,000 Invoices in ${elapsed}ms (SLA <2000ms PASS)!`,
+        `CONSTRUCTIVIST STRESS BENCHMARK PASS: 2,500 SUBSCRIPTIONS INDEXED IN ${elapsed} MS!`,
         'success'
       );
     } catch (err: unknown) {
@@ -69,8 +69,7 @@ export default function Home() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Reset failed');
 
-      showToast('Database reset to clean initial seed dataset.', 'info');
-      // trigger page state refresh
+      showToast('REVOLUTIONARY LEDGER RESET TO SEED STATE.', 'info');
       window.location.reload();
     } catch (err: unknown) {
       showToast(err instanceof Error ? err.message : 'Reset failed', 'error');
@@ -78,8 +77,8 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col">
-      {/* Top Navigation */}
+    <div className="min-h-screen bg-[#1a1a1a] flex flex-col text-white selection:bg-[#cc0000] selection:text-white">
+      {/* Top Constructivist Navbar */}
       <Navbar
         currentTab={currentTab}
         setCurrentTab={setCurrentTab}
@@ -88,8 +87,32 @@ export default function Home() {
         isBenchmarking={isBenchmarking}
       />
 
+      {/* Constructivist Diagonal Stripe Separator */}
+      <div className="con-stripe-thin w-full" />
+
+      {/* Manifesto Marquee Header */}
+      <div className="bg-[#000000] border-b border-[#2d2d2d] py-2 px-4 overflow-hidden">
+        <div className="max-w-7xl mx-auto flex items-center justify-between text-xs font-['Bebas_Neue'] tracking-widest text-[#f2f0eb]">
+          <div className="flex items-center gap-3">
+            <span className="text-[#cc0000] flex items-center gap-1 font-bold">
+              <Flame className="w-3.5 h-3.5 fill-current" />
+              CONSTRUCTIVIST DOCTRINE:
+            </span>
+            <span className="text-[#e8e0d0]">
+              ART INTO LIFE &middot; ZERO REVENUE LEAKAGE &middot; DIAGONAL COMPOSITION &middot; 100% IDEMPOTENCY
+            </span>
+          </div>
+
+          <div className="hidden sm:flex items-center gap-4 text-[#6b6b6b]">
+            <span>PRECISION DECIMALS: DECIMAL(18,4)</span>
+            <span>&middot;</span>
+            <span className="text-[#cc0000]">ODOO BRAND (+560.00) VERIFIED</span>
+          </div>
+        </div>
+      </div>
+
       {/* Main Content Area */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {currentTab === 'finance' && <FinanceDashboard onSelectTab={setCurrentTab} />}
         {currentTab === 'subscriptions' && <SubscriptionsView />}
         {currentTab === 'billing-day' && <BillingDayView />}
@@ -101,17 +124,29 @@ export default function Home() {
         {currentTab === 'customer-invoices' && <InvoicesView />}
       </main>
 
-      {/* Footer */}
-      <footer className="border-t border-slate-900 bg-slate-950 py-4 mt-auto">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 font-mono gap-2">
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-emerald-500" />
-            <span>Brightloop OS v1.0.0 Enterprise Edition</span>
-            <span>•</span>
-            <span className="text-slate-400">Zero-Leakage Cryptographic Billing Engine</span>
+      {/* Constructivist Diagonal Stripe Accent Above Footer */}
+      <div className="con-stripe w-full" />
+
+      {/* Constructivist Industrial Footer */}
+      <footer className="border-t-4 border-[#000000] bg-[#000000] py-8 text-white relative">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 font-['Roboto_Condensed']">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 bg-[#cc0000] flex items-center justify-center font-['Bebas_Neue'] text-xl font-bold transform -skew-x-6">
+              BL
+            </div>
+            <div>
+              <div className="font-['Bebas_Neue'] text-lg tracking-wider text-white">
+                BRIGHTLOOP OS // REVOLUTIONARY BILLING ARCHITECTURE
+              </div>
+              <div className="text-xs text-[#6b6b6b]">
+                Soviet-Era Constructivism Meets High-Speed Autonomous FinTech Systems &middot; Sub-2-Second Response SLA
+              </div>
+            </div>
           </div>
-          <div>
-            Built with Next.js 14, Tailwind CSS, TypeScript & SHA-256 Ledger Chaining
+
+          <div className="text-xs text-[#6b6b6b] text-center md:text-right font-mono">
+            <div>CRYPTOGRAPHIC SHA-256 HASH-CHAINED LEDGER</div>
+            <div className="text-[#f2f0eb] mt-0.5">Designed with Bebas Neue, Red (#CC0000), Pure Black & Steel Angles</div>
           </div>
         </div>
       </footer>
@@ -120,16 +155,15 @@ export default function Home() {
       <EmailDrawer />
       <AuthModal />
 
-      {/* Toast Notification Container */}
+      {/* Toast Notification Container in Constructivist Style */}
       {toast && (
-        <div className="fixed bottom-5 right-5 z-50 flex items-center gap-2 px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 shadow-2xl text-xs font-mono animate-in slide-in-from-bottom duration-200">
-          {toast.type === 'success' && <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />}
-          {toast.type === 'error' && <AlertCircle className="w-4 h-4 text-rose-400 shrink-0" />}
-          {toast.type === 'info' && <Info className="w-4 h-4 text-blue-400 shrink-0" />}
-          <span className="text-slate-100">{toast.message}</span>
+        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 px-5 py-3.5 bg-[#000000] border-l-4 border-[#cc0000] shadow-2xl text-xs font-['Bebas_Neue'] tracking-wider uppercase text-white animate-in slide-in-from-bottom duration-200">
+          {toast.type === 'success' && <CheckCircle2 className="w-4 h-4 text-[#cc0000] shrink-0" />}
+          {toast.type === 'error' && <AlertCircle className="w-4 h-4 text-[#cc0000] shrink-0" />}
+          {toast.type === 'info' && <Info className="w-4 h-4 text-white shrink-0" />}
+          <span className="text-sm">{toast.message}</span>
         </div>
       )}
     </div>
   );
 }
-

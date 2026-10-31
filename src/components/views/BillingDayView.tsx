@@ -21,7 +21,6 @@ export function BillingDayView({ onSelectInvoice }: { onSelectInvoice?: (id: str
   const [targetDate, setTargetDate] = useState(new Date().toISOString().split('T')[0]);
   const [isRunning, setIsRunning] = useState(false);
   const [lastRunResult, setLastRunResult] = useState<any>(null);
-  const [runHistory, setRunHistory] = useState<any[]>([]);
 
   const handleExecuteBatchRun = async () => {
     setIsRunning(true);
@@ -39,19 +38,18 @@ export function BillingDayView({ onSelectInvoice }: { onSelectInvoice?: (id: str
       if (!res.ok) throw new Error(data.error || 'Billing run failed');
 
       setLastRunResult(data);
-      setRunHistory((prev) => [data, ...prev]);
       setQueryLatencyMs(data.durationMs);
       await refreshOutbox();
 
       if (data.billedCount > 0) {
-        showToast(`Batch billing run complete: ${data.billedCount} invoices generated!`, 'success');
+        showToast(`BATCH RUN EXECUTED: ${data.billedCount} INVOICES CHAINED!`, 'success');
       } else if (data.skippedAlreadyBilledCount > 0) {
         showToast(
-          `Idempotency Guard Active: ${data.skippedAlreadyBilledCount} already billed. 0 duplicates created.`,
+          `IDEMPOTENCY GUARD: ${data.skippedAlreadyBilledCount} ALREADY BILLED. ZERO DUPLICATION.`,
           'info'
         );
       } else {
-        showToast('No active subscriptions due for billing on this target date.', 'info');
+        showToast('NO ACTIVE CONTRACTS DUE FOR BILLING ON THIS TARGET DATE.', 'info');
       }
     } catch (err: unknown) {
       showToast(err instanceof Error ? err.message : 'Execution failed', 'error');
@@ -61,69 +59,71 @@ export function BillingDayView({ onSelectInvoice }: { onSelectInvoice?: (id: str
   };
 
   return (
-    <div className="space-y-6">
-      {/* Title */}
-      <div className="pb-4 border-b border-slate-800">
-        <div className="flex items-center gap-2">
-          <h1 className="text-2xl font-bold tracking-tight text-slate-100 font-mono">
-            Zero-Touch Batch Billing Engine
-          </h1>
-          <span className="px-2 py-0.5 rounded text-[11px] font-mono bg-emerald-950/80 border border-emerald-500/40 text-emerald-300">
-            SHA-256 IDEMPOTENT
-          </span>
+    <div className="space-y-8 font-['Roboto_Condensed']">
+      {/* Header */}
+      <div className="bg-[#000000] p-6 border-b-4 border-[#cc0000] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <div className="flex items-center gap-2 mb-1">
+            <h1 className="text-3xl sm:text-4xl font-['Bebas_Neue'] tracking-wider text-white uppercase transform -rotate-1 origin-left">
+              BATCH BILLING DAY ENGINE // <span className="text-[#cc0000]">IDEMPOTENCY LEDGER</span>
+            </h1>
+            <span className="px-2 py-0.5 bg-[#cc0000] text-white text-[11px] font-['Bebas_Neue'] tracking-widest uppercase">
+              SHA-256 HASH-CHAINED
+            </span>
+          </div>
+          <p className="text-xs text-[#f2f0eb] font-mono">
+            Scene 4 & Novelty #2: Zero-Touch Batch Generator &middot; Deterministic Unique Constraint &middot; Zero Double-Billing Guarantee
+          </p>
         </div>
-        <p className="text-xs text-slate-400 mt-1">
-          Scene 4 & Novelty #2: Automated invoice batching, tax/discount calculation, and cryptographic ledger chaining.
-        </p>
       </div>
 
       {/* Novelty #2 Cryptographic Integrity Badge Banner */}
-      <div className="p-4 rounded-xl bg-slate-900/70 border border-emerald-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-lg shadow-emerald-950/20">
-        <div className="flex items-center gap-3">
-          <div className="p-2.5 rounded-lg bg-emerald-950 border border-emerald-500/40 text-emerald-400">
-            <ShieldCheck className="w-6 h-6" />
+      <div className="p-6 bg-[#2d2d2d] border-l-6 border-[#cc0000] flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xl">
+        <div className="flex items-center gap-4">
+          <div className="p-3 bg-[#cc0000] text-white">
+            <ShieldCheck className="w-8 h-8" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-sm font-bold text-slate-100 font-mono">
-                Zero-Leakage Cryptographic Idempotency Ledger
+              <span className="text-xl font-bold font-['Bebas_Neue'] tracking-wider text-white uppercase">
+                ZERO-LEAKAGE CRYPTOGRAPHIC IDEMPOTENCY LEDGER
               </span>
-              <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-500/20 text-emerald-300">
+              <span className="text-[10px] px-2 py-0.5 bg-white text-black font-['Bebas_Neue'] tracking-wider uppercase font-bold">
                 NOVELTY #2
               </span>
             </div>
-            <p className="text-xs text-slate-400 mt-0.5">
-              Guarantees zero duplicate invoices and zero skipped cycles. Unique constraint: <code className="text-emerald-400 text-[11px]">(subscription_id, billing_cycle_key)</code>.
+            <p className="text-xs text-[#f2f0eb] mt-0.5 font-mono">
+              Unique constraint: <code className="text-[#cc0000] font-bold">(subscription_id, billing_cycle_key)</code>. Guaranteed zero duplicate invoices across company history.
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-950/80 border border-emerald-500/50 text-emerald-300 font-mono text-xs font-semibold shrink-0">
-          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-          100% Verified Chain • 0 Double-Bills
+        <div className="flex items-center gap-2 px-4 py-2 bg-[#000000] border border-[#cc0000] text-white font-['Bebas_Neue'] text-sm tracking-wider uppercase shrink-0">
+          <span className="w-2.5 h-2.5 bg-[#cc0000] animate-pulse" />
+          100% VERIFIED CHAIN &bull; 0 DOUBLE-BILLS
         </div>
       </div>
 
       {/* Control Panel */}
-      <div className="p-6 rounded-2xl bg-slate-900/50 border border-slate-800">
+      <div className="p-8 bg-[#000000] border-2 border-[#2d2d2d] relative con-wedge space-y-6">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-          <div className="space-y-2">
-            <label className="block text-xs font-mono text-slate-300">
-              Target Billing Run Date (Simulate Current or Future Billing Day)
+          <div className="space-y-2 font-mono">
+            <label className="block text-xs uppercase tracking-wider text-[#f2f0eb]">
+              TARGET BILLING RUN DATE (SIMULATE HARVEST DAY)
             </label>
             <div className="flex items-center gap-2">
               <input
                 type="date"
                 value={targetDate}
                 onChange={(e) => setTargetDate(e.target.value)}
-                className="px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-xs font-mono text-slate-100 focus:outline-none focus:border-emerald-500"
+                className="px-4 py-2.5 bg-[#1a1a1a] border-2 border-[#2d2d2d] text-xs font-mono uppercase text-white focus:outline-none focus:border-[#cc0000]"
               />
               <button
                 type="button"
                 onClick={() => setTargetDate(new Date().toISOString().split('T')[0])}
-                className="px-2.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-mono"
+                className="con-btn-black !py-2 !px-3 text-xs"
               >
-                Today
+                <span>TODAY</span>
               </button>
               <button
                 type="button"
@@ -132,89 +132,85 @@ export function BillingDayView({ onSelectInvoice }: { onSelectInvoice?: (id: str
                   d.setMonth(d.getMonth() + 1);
                   setTargetDate(d.toISOString().split('T')[0]);
                 }}
-                className="px-2.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-mono"
+                className="con-btn-black !py-2 !px-3 text-xs"
               >
-                +1 Month
+                <span>+1 MONTH</span>
               </button>
             </div>
-            <p className="text-[11px] text-slate-500 font-mono">
-              The engine will scan all ACTIVE subscriptions where nextBillingDate &le; {targetDate}.
-            </p>
           </div>
 
           <button
             onClick={handleExecuteBatchRun}
             disabled={isRunning}
-            className="px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-mono font-bold text-sm flex items-center justify-center gap-2 shadow-lg shadow-emerald-950/60 transition-all disabled:opacity-50"
+            className="con-btn !py-3.5 !px-8 text-base font-bold disabled:opacity-50"
           >
-            <Zap className="w-4 h-4" />
-            {isRunning ? 'Processing Batch Run...' : 'Execute Batch Billing Run'}
+            <span>
+              <Zap className="w-5 h-5 mr-2" />
+              {isRunning ? 'EXECUTING BATCH RUN...' : 'EXECUTE BATCH BILLING RUN'}
+            </span>
           </button>
         </div>
 
         {/* Latest Run Outcome HUD */}
         {lastRunResult && (
-          <div className="mt-6 pt-6 border-t border-slate-800 grid grid-cols-1 sm:grid-cols-4 gap-4 font-mono text-xs animate-in fade-in">
-            <div className="p-3 rounded-lg bg-slate-950 border border-slate-800">
-              <span className="text-slate-500 block mb-1">Invoices Generated</span>
-              <span className="text-lg font-bold text-emerald-400">{lastRunResult.billedCount}</span>
+          <div className="pt-6 border-t-2 border-[#1a1a1a] grid grid-cols-1 sm:grid-cols-4 gap-4 font-mono text-xs animate-in fade-in">
+            <div className="p-4 bg-[#1a1a1a] border-l-4 border-[#cc0000]">
+              <span className="text-[#6b6b6b] uppercase block mb-1">INVOICES GENERATED</span>
+              <span className="text-3xl font-['Bebas_Neue'] tracking-wider text-white">{lastRunResult.billedCount}</span>
             </div>
 
-            <div className="p-3 rounded-lg bg-slate-950 border border-slate-800">
-              <span className="text-slate-500 block mb-1">Idempotently Skipped</span>
-              <span className="text-lg font-bold text-blue-400">
+            <div className="p-4 bg-[#1a1a1a] border-l-4 border-white">
+              <span className="text-[#6b6b6b] uppercase block mb-1">IDEMPOTENTLY SKIPPED</span>
+              <span className="text-3xl font-['Bebas_Neue'] tracking-wider text-[#f2f0eb]">
                 {lastRunResult.skippedAlreadyBilledCount}
               </span>
-              <span className="text-[10px] text-slate-500 block mt-0.5">Zero duplicates created</span>
+              <span className="text-[10px] text-[#cc0000] block mt-0.5 uppercase">Zero duplicates</span>
             </div>
 
-            <div className="p-3 rounded-lg bg-slate-950 border border-slate-800">
-              <span className="text-slate-500 block mb-1">Expired Auto-Closed</span>
-              <span className="text-lg font-bold text-amber-400">{lastRunResult.autoClosedCount}</span>
+            <div className="p-4 bg-[#1a1a1a] border-l-4 border-[#c45522]">
+              <span className="text-[#6b6b6b] uppercase block mb-1">EXPIRED AUTO-CLOSED</span>
+              <span className="text-3xl font-['Bebas_Neue'] tracking-wider text-[#c45522]">{lastRunResult.autoClosedCount}</span>
             </div>
 
-            <div className="p-3 rounded-lg bg-slate-950 border border-slate-800">
-              <span className="text-slate-500 block mb-1">Execution Speed</span>
-              <span className="text-lg font-bold text-slate-200">{lastRunResult.durationMs} ms</span>
-              <span className="text-[10px] text-emerald-400 block mt-0.5">SLA &lt;2000ms PASS</span>
+            <div className="p-4 bg-[#1a1a1a] border-l-4 border-[#cc0000]">
+              <span className="text-[#6b6b6b] uppercase block mb-1">EXECUTION LATENCY</span>
+              <span className="text-3xl font-['Bebas_Neue'] tracking-wider text-white">{lastRunResult.durationMs} MS</span>
+              <span className="text-[10px] text-[#cc0000] block mt-0.5 uppercase">SLA &lt;2000MS PASS</span>
             </div>
           </div>
         )}
       </div>
 
-      {/* Last Run Hash Chaining Card */}
+      {/* Generated Invoices in Batch */}
       {lastRunResult && lastRunResult.generatedInvoices?.length > 0 && (
-        <div className="p-5 rounded-xl bg-slate-950 border border-slate-800 space-y-3 font-mono text-xs">
-          <div className="flex items-center justify-between">
-            <h3 className="font-semibold text-slate-200 flex items-center gap-2">
-              <Lock className="w-4 h-4 text-emerald-400" />
-              Cryptographic Hash Chain for Batch Run
+        <div className="p-6 bg-[#2d2d2d] border-l-6 border-[#cc0000] space-y-4 font-mono text-xs">
+          <div className="flex items-center justify-between border-b border-[#1a1a1a] pb-3">
+            <h3 className="text-xl font-['Bebas_Neue'] tracking-wider text-white uppercase flex items-center gap-2">
+              <Lock className="w-4 h-4 text-[#cc0000]" />
+              BATCH RUN CRYPTOGRAPHIC HASH CHAIN
             </h3>
-            <span className="text-slate-500 text-[11px]">SHA-256 Verified</span>
+            <span className="text-[#f2f0eb] uppercase text-[10px] bg-[#000000] px-2 py-1">SHA-256 VERIFIED</span>
           </div>
 
           <div className="space-y-2">
             {lastRunResult.generatedInvoices.map((inv: any) => (
               <div
                 key={inv.id}
-                className="p-3 rounded-lg bg-slate-900 border border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-2"
+                className="p-3 bg-[#000000] border border-[#1a1a1a] flex flex-col md:flex-row md:items-center justify-between gap-2"
               >
                 <div>
-                  <div className="font-bold text-slate-100 flex items-center gap-2">
-                    {inv.invoiceNumber} — {inv.customerName}
-                    <span className="text-emerald-400">{formatCurrency(inv.grandTotal)}</span>
+                  <div className="font-bold text-white text-sm flex items-center gap-2">
+                    {inv.invoiceNumber} &bull; {inv.customerName}
+                    <span className="text-[#cc0000] font-bold">{formatCurrency(inv.grandTotal)}</span>
                   </div>
-                  <div className="text-[11px] text-slate-400 mt-1">
-                    Cycle: <code className="text-slate-300">{inv.billingCycleKey}</code>
+                  <div className="text-[10px] text-[#6b6b6b] mt-0.5">
+                    CYCLE KEY: {inv.billingCycleKey}
                   </div>
                 </div>
 
                 <div className="text-right">
-                  <div className="text-[10px] text-slate-500 truncate max-w-xs md:max-w-md">
-                    Hash: <code className="text-emerald-400">{inv.ledgerHash}</code>
-                  </div>
-                  <div className="text-[10px] text-slate-600 truncate max-w-xs md:max-w-md">
-                    Prev: {inv.previousLedgerHash}
+                  <div className="text-[10px] text-[#cc0000] font-mono truncate max-w-xs md:max-w-md">
+                    HASH: {inv.ledgerHash}
                   </div>
                 </div>
               </div>
@@ -225,4 +221,3 @@ export function BillingDayView({ onSelectInvoice }: { onSelectInvoice?: (id: str
     </div>
   );
 }
-

@@ -23,35 +23,35 @@ export function PasswordStrengthMeter({ password, onValidChange }: PasswordStren
   }, [isValid, onValidChange]);
 
   const rules = [
-    { label: '> 8 Characters (min 9)', passed: hasMinLength },
-    { label: 'Uppercase Letter (A-Z)', passed: hasUppercase },
-    { label: 'Lowercase Letter (a-z)', passed: hasLowercase },
-    { label: 'Special Character (!@#$...)', passed: hasSpecial },
+    { label: '> 8 CHARACTERS (MIN 9)', passed: hasMinLength },
+    { label: 'UPPERCASE LETTER (A-Z)', passed: hasUppercase },
+    { label: 'LOWERCASE LETTER (a-z)', passed: hasLowercase },
+    { label: 'SPECIAL CHARACTER (!@#$...)', passed: hasSpecial },
   ];
 
   return (
-    <div className="mt-3 space-y-2">
-      <div className="flex items-center justify-between text-xs text-slate-400">
-        <span>Password Security Requirements</span>
-        <span className={isValid ? 'text-emerald-400 font-semibold' : 'text-amber-400'}>
-          {rules.filter((r) => r.passed).length}/4 Compliant
+    <div className="mt-3 space-y-2 font-mono">
+      <div className="flex items-center justify-between text-xs text-[#6b6b6b] uppercase">
+        <span>SECURITY CRITERIA VERIFIER</span>
+        <span className={isValid ? 'text-white bg-[#cc0000] px-2 py-0.5 font-bold' : 'text-[#c45522]'}>
+          {rules.filter((r) => r.passed).length}/4 COMPLIANT
         </span>
       </div>
 
-      <div className="grid grid-cols-2 gap-2 text-xs">
+      <div className="grid grid-cols-2 gap-2 text-[11px]">
         {rules.map((rule, idx) => (
           <div
             key={idx}
-            className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-md border transition-colors ${
+            className={`flex items-center gap-1.5 px-2.5 py-1.5 border transition-colors ${
               rule.passed
-                ? 'bg-emerald-950/40 border-emerald-500/40 text-emerald-300'
-                : 'bg-slate-900 border-slate-800 text-slate-500'
+                ? 'bg-[#cc0000] border-[#cc0000] text-white font-bold'
+                : 'bg-[#1a1a1a] border-[#2d2d2d] text-[#6b6b6b]'
             }`}
           >
             {rule.passed ? (
-              <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+              <Check className="w-3.5 h-3.5 text-white shrink-0" />
             ) : (
-              <X className="w-3.5 h-3.5 text-slate-500 shrink-0" />
+              <X className="w-3.5 h-3.5 text-[#6b6b6b] shrink-0" />
             )}
             <span className="truncate">{rule.label}</span>
           </div>
@@ -60,4 +60,3 @@ export function PasswordStrengthMeter({ password, onValidChange }: PasswordStren
     </div>
   );
 }
-

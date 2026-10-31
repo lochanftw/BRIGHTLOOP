@@ -77,14 +77,13 @@ export function CustomerPortalView({ onSelectInvoice }: { onSelectInvoice?: (id:
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Action failed');
 
-      showToast(`Subscription status updated: ${data.subscription.status}`, 'success');
+      showToast(`DIRECTIVE COMMITTED: ${data.subscription.status}`, 'success');
       await fetchCustomerData();
     } catch (err: unknown) {
       showToast(err instanceof Error ? err.message : 'Action failed', 'error');
     }
   };
 
-  // 1-Click Pay Invoice Online
   const handlePayInvoiceOnline = async (inv: Invoice) => {
     try {
       const res = await fetch('/api/payments', {
@@ -102,14 +101,13 @@ export function CustomerPortalView({ onSelectInvoice }: { onSelectInvoice?: (id:
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Payment failed');
 
-      showToast(`Invoice ${inv.invoiceNumber} paid in full! Thank you.`, 'success');
+      showToast(`INVOICE ${inv.invoiceNumber} SETTLED IN FULL!`, 'success');
       await fetchCustomerData();
     } catch (err: unknown) {
       showToast(err instanceof Error ? err.message : 'Payment failed', 'error');
     }
   };
 
-  // Novelty #5: Self-Healing Pause Instead of Churn Acceptance
   const handleAcceptSelfHealingPause = async () => {
     if (!retentionSub) return;
     try {
@@ -124,7 +122,7 @@ export function CustomerPortalView({ onSelectInvoice }: { onSelectInvoice?: (id:
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Pause failed');
 
-      showToast('30-Day Billing Freeze activated! Your configuration is preserved and renewal dates extended by 30 days.', 'success');
+      showToast('30-DAY BILLING FREEZE ACTIVATED! RENEWAL DATES EXTENDED BY 30 DAYS.', 'success');
       setRetentionSub(null);
       await fetchCustomerData();
     } catch (err: unknown) {
@@ -133,146 +131,157 @@ export function CustomerPortalView({ onSelectInvoice }: { onSelectInvoice?: (id:
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8 font-['Roboto_Condensed']">
       {/* Header */}
-      <div className="pb-4 border-b border-slate-800">
-        <div className="flex items-center gap-2">
-          <h1 className="text-2xl font-bold tracking-tight text-slate-100 font-mono">
-            Customer Self-Service Portal
-          </h1>
-          <span className="px-2 py-0.5 rounded text-[11px] font-mono bg-emerald-950/80 border border-emerald-500/40 text-emerald-300">
-            {currentUser.companyName || currentUser.fullName}
-          </span>
+      <div className="bg-[#000000] p-6 border-b-4 border-[#cc0000] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <div className="flex items-center gap-2 mb-1">
+            <h1 className="text-3xl sm:text-4xl font-['Bebas_Neue'] tracking-wider text-white uppercase transform -rotate-1 origin-left">
+              CUSTOMER SELF-SERVICE PORTAL // <span className="text-[#cc0000]">SOVEREIGN DESK</span>
+            </h1>
+            <span className="px-2 py-0.5 bg-[#cc0000] text-white text-[11px] font-['Bebas_Neue'] tracking-widest uppercase">
+              {currentUser.companyName || currentUser.fullName}
+            </span>
+          </div>
+          <p className="text-xs text-[#f2f0eb] font-mono">
+            Autonomous Contract Governance &bull; Smart-Ramp Volume Discounts &bull; Self-Healing Retention Engine
+          </p>
         </div>
-        <p className="text-xs text-slate-400 mt-1">
-          Scene 1 & Phase 5: Manage subscriptions, adjust seats, pay invoices, and review reverse-discount smart ramps.
-        </p>
       </div>
 
-      {/* NOVELTY #3: ELASTIC SEAT & ADD-ON SMART-RAMP OPTIMIZER */}
-      <div className="p-5 rounded-2xl bg-gradient-to-r from-emerald-950/80 via-slate-900 to-slate-950 border-2 border-emerald-500/40 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4 font-mono text-xs">
-        <div className="flex items-center gap-3.5">
-          <div className="p-3 rounded-xl bg-emerald-950 border border-emerald-500/50 text-emerald-400">
-            <TrendingUp className="w-6 h-6" />
+      {/* NOVELTY #3: ELASTIC SEAT SMART-RAMP OPTIMIZER */}
+      <div className="p-6 bg-[#000000] border-2 border-[#cc0000] relative con-wedge flex flex-col md:flex-row md:items-center justify-between gap-6 shadow-2xl">
+        <div className="flex items-center gap-4">
+          <div className="p-3 bg-[#cc0000] text-white">
+            <TrendingUp className="w-8 h-8" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="font-bold text-sm text-slate-100 font-mono">
-                Smart-Ramp Volume Optimization Detected
+              <span className="text-2xl font-['Bebas_Neue'] tracking-wider text-white uppercase">
+                SMART-RAMP VOLUME OPTIMIZATION DETECTED
               </span>
-              <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-bold">
+              <span className="text-[10px] px-2 py-0.5 bg-white text-black font-['Bebas_Neue'] tracking-wider uppercase font-bold">
                 NOVELTY #3
               </span>
             </div>
-            <p className="text-slate-300 font-sans mt-0.5">
-              Add <strong>2 more seats</strong> to unlock the <strong>15% Tier-2 Volume Discount (VOL-15)</strong> — lowering your per-seat unit price and saving <strong>$640/yr net</strong>!
+            <p className="text-sm text-[#f2f0eb] mt-1 font-mono">
+              Add <strong>2 more seats</strong> to unlock the <strong>15% Tier-2 Volume Discount (VOL-15)</strong> &mdash; reducing your per-seat unit price and saving <strong className="text-[#cc0000] font-bold">$640.00/yr net</strong>!
             </p>
           </div>
         </div>
 
         <button
           onClick={() => setSmartRampModal(true)}
-          className="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-lg shadow-emerald-950 shrink-0 font-sans transition-colors"
+          className="con-btn !py-3 !px-6 text-sm shrink-0 font-bold"
         >
-          <Sparkles className="w-4 h-4" />
-          Preview & Upgrade Smart-Ramp
+          <span>
+            <Sparkles className="w-4 h-4 mr-2" />
+            PREVIEW &amp; UPGRADE SMART-RAMP
+          </span>
         </button>
       </div>
 
       {/* Subscriptions Section */}
       <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <h2 className="text-base font-bold font-mono text-slate-100 flex items-center gap-2">
-            <Compass className="w-4 h-4 text-emerald-400" />
-            My Active Subscriptions & Plan Controls
+        <div className="flex items-center justify-between border-b-2 border-[#2d2d2d] pb-2">
+          <h2 className="text-2xl font-['Bebas_Neue'] tracking-wider text-white uppercase flex items-center gap-2">
+            <Compass className="w-5 h-5 text-[#cc0000]" />
+            MY ACTIVE CONTRACTS &amp; PLAN POLICIES
           </h2>
-          <span className="text-xs text-slate-400 font-mono">
-            {subscriptions.length} Subscriptions on Account
+          <span className="text-xs font-mono text-[#6b6b6b] uppercase">
+            {subscriptions.length} CONTRACTS ON ACCOUNT
           </span>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {subscriptions.map((sub) => {
             const plan = plans.find((p) => p.id === sub.planId);
 
             return (
               <div
                 key={sub.id}
-                className="p-5 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-4 font-mono text-xs shadow-sm hover:border-slate-700 transition-colors"
+                className="con-card con-wedge p-6 bg-[#2d2d2d] border-l-6 border-[#cc0000] space-y-4 font-mono text-xs shadow-xl"
               >
-                <div className="flex items-start justify-between gap-2">
+                <div className="flex items-start justify-between gap-2 border-b border-[#1a1a1a] pb-3">
                   <div>
                     <div className="flex items-center gap-2">
-                      <span className="font-bold text-sm text-slate-100">{sub.subscriptionNumber}</span>
+                      <span className="text-2xl font-['Bebas_Neue'] tracking-wider text-white">
+                        {sub.subscriptionNumber}
+                      </span>
                       <span
-                        className={`px-2 py-0.5 rounded text-[10px] font-bold ${
+                        className={`px-2 py-0.5 text-[10px] font-['Bebas_Neue'] tracking-wider uppercase font-bold ${
                           sub.status === 'ACTIVE'
-                            ? 'bg-emerald-950 text-emerald-300 border border-emerald-500/40'
+                            ? 'bg-[#cc0000] text-white'
                             : sub.status === 'PAUSED'
-                            ? 'bg-purple-950 text-purple-300 border border-purple-500/40'
+                            ? 'bg-[#000000] text-white border border-[#cc0000]'
                             : sub.status === 'QUOTATION'
-                            ? 'bg-amber-950 text-amber-300 border border-amber-500/40'
-                            : 'bg-slate-800 text-slate-400'
+                            ? 'bg-[#c45522] text-white'
+                            : 'bg-[#6b6b6b] text-black'
                         }`}
                       >
                         {sub.status}
                       </span>
                     </div>
-                    <div className="text-[11px] text-slate-400 mt-1">{sub.planName}</div>
+                    <div className="text-xs text-[#f2f0eb] mt-0.5">{sub.planName}</div>
                   </div>
 
                   <div className="text-right">
-                    <div className="text-base font-bold text-emerald-400">{formatCurrency(sub.grandTotal)}</div>
-                    <div className="text-[10px] text-slate-500">per cycle</div>
+                    <div className="text-2xl font-['Bebas_Neue'] tracking-wider text-[#cc0000] font-bold">
+                      {formatCurrency(sub.grandTotal)}
+                    </div>
+                    <div className="text-[10px] text-[#6b6b6b] uppercase">PER CYCLE</div>
                   </div>
                 </div>
 
-                {/* Dates */}
-                <div className="p-3 rounded-lg bg-slate-950 border border-slate-800 grid grid-cols-2 gap-2 text-[11px] text-slate-400">
-                  <div>Next Renewal: <span className="text-slate-200">{sub.nextBillingDate}</span></div>
-                  <div>Contract Expiry: <span className="text-slate-200">{sub.expiryDate}</span></div>
+                <div className="p-3 bg-[#000000] border-l-2 border-white grid grid-cols-2 gap-2 text-xs">
+                  <div>NEXT RENEWAL: <strong className="text-white">{sub.nextBillingDate}</strong></div>
+                  <div>CONTRACT EXPIRY: <strong className="text-white">{sub.expiryDate}</strong></div>
                 </div>
 
-                {/* Plan-Governed Lifecycle Actions */}
-                <div className="pt-2 border-t border-slate-800 flex flex-wrap items-center justify-between gap-2">
-                  <div className="text-[10px] text-slate-500">Plan Policy Governance</div>
+                {/* Plan-Governed Controls */}
+                <div className="pt-2 border-t border-[#1a1a1a] flex flex-wrap items-center justify-between gap-2">
+                  <div className="text-[10px] text-[#6b6b6b] uppercase font-bold">PLAN POLICY PERMISSIONS</div>
 
                   <div className="flex items-center gap-2">
                     {sub.status === 'QUOTATION' && (
                       <button
                         onClick={() => handleAction(sub.id, 'TRANSITION', 'CONFIRMED')}
-                        className="px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold"
+                        className="con-btn !py-1.5 !px-3 text-xs"
                       >
-                        Accept Quotation
+                        <span>ACCEPT QUOTATION</span>
                       </button>
                     )}
 
                     {sub.status === 'ACTIVE' && plan?.allowPause && (
                       <button
                         onClick={() => handleAction(sub.id, 'PAUSE')}
-                        className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-purple-300 text-xs font-semibold flex items-center gap-1"
+                        className="con-btn-black !py-1.5 !px-3 text-xs"
                       >
-                        <Pause className="w-3.5 h-3.5" />
-                        Pause Billing
+                        <span>
+                          <Pause className="w-3 h-3 mr-1 text-[#cc0000]" />
+                          PAUSE
+                        </span>
                       </button>
                     )}
 
                     {sub.status === 'PAUSED' && (
                       <button
                         onClick={() => handleAction(sub.id, 'RESUME')}
-                        className="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold flex items-center gap-1"
+                        className="con-btn !py-1.5 !px-3 text-xs"
                       >
-                        <Play className="w-3.5 h-3.5" />
-                        Resume Billing
+                        <span>
+                          <Play className="w-3 h-3 mr-1" />
+                          RESUME
+                        </span>
                       </button>
                     )}
 
                     {sub.status === 'ACTIVE' && plan?.allowEarlyClose && (
                       <button
-                        onClick={() => setRetentionSub(sub)} // Triggers Novelty #5 Self-Healing Modal!
-                        className="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-rose-950 hover:text-rose-300 text-slate-400 text-xs transition-colors"
+                        onClick={() => setRetentionSub(sub)}
+                        className="con-btn-black !py-1.5 !px-3 text-xs hover:!bg-[#cc0000]"
                       >
-                        Cancel / Close Early
+                        <span>CANCEL EARLY</span>
                       </button>
                     )}
                   </div>
@@ -283,64 +292,66 @@ export function CustomerPortalView({ onSelectInvoice }: { onSelectInvoice?: (id:
         </div>
       </div>
 
-      {/* Invoices & Online Checkout */}
-      <div className="space-y-4 pt-4 border-t border-slate-800">
-        <h2 className="text-base font-bold font-mono text-slate-100 flex items-center gap-2">
-          <FileText className="w-4 h-4 text-emerald-400" />
-          My Invoices & 1-Click Online Payments
+      {/* Invoices Section */}
+      <div className="space-y-4 pt-4 border-t-2 border-[#2d2d2d]">
+        <h2 className="text-2xl font-['Bebas_Neue'] tracking-wider text-white uppercase flex items-center gap-2">
+          <FileText className="w-5 h-5 text-[#cc0000]" />
+          MY INVOICES &bull; 1-CLICK CHECKOUT
         </h2>
 
-        <div className="bg-slate-900/50 border border-slate-800 rounded-xl overflow-hidden shadow-sm">
+        <div className="bg-[#2d2d2d] border-l-6 border-[#cc0000] shadow-xl overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-xs text-left font-mono">
-              <thead className="bg-slate-950 text-slate-400 uppercase text-[10px] border-b border-slate-800">
+              <thead className="bg-[#000000] text-[#f2f0eb] uppercase font-['Bebas_Neue'] tracking-wider text-sm border-b-2 border-[#cc0000]">
                 <tr>
-                  <th className="py-3 px-4">Invoice #</th>
-                  <th className="py-3 px-4">Due Date</th>
-                  <th className="py-3 px-4">Status</th>
-                  <th className="py-3 px-4">Total Amount</th>
-                  <th className="py-3 px-4">Balance Owed</th>
-                  <th className="py-3 px-4 text-right">Actions</th>
+                  <th className="py-3 px-4">INVOICE #</th>
+                  <th className="py-3 px-4">DUE DATE</th>
+                  <th className="py-3 px-4">STATE</th>
+                  <th className="py-3 px-4">TOTAL</th>
+                  <th className="py-3 px-4">BALANCE DUE</th>
+                  <th className="py-3 px-4 text-right">DIRECTIVE</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800">
+              <tbody className="divide-y divide-[#1a1a1a]">
                 {invoices.length === 0 ? (
                   <tr>
-                    <td colSpan={6} className="py-8 text-center text-slate-500 font-mono">
-                      No invoices found on this customer account
+                    <td colSpan={6} className="py-8 text-center text-[#6b6b6b] uppercase">
+                      No invoices on account
                     </td>
                   </tr>
                 ) : (
                   invoices.map((inv) => (
-                    <tr key={inv.id} className="hover:bg-slate-800/40 transition-colors">
-                      <td className="py-3 px-4 font-bold text-slate-200">{inv.invoiceNumber}</td>
-                      <td className="py-3 px-4 text-slate-300">{inv.dueDate}</td>
+                    <tr key={inv.id} className="hover:bg-[#1a1a1a] transition-colors">
+                      <td className="py-3 px-4 font-bold text-white">{inv.invoiceNumber}</td>
+                      <td className="py-3 px-4 text-[#f2f0eb]">{inv.dueDate}</td>
                       <td className="py-3 px-4">
                         <span
-                          className={`px-2 py-0.5 rounded text-[10px] font-bold ${
+                          className={`px-2 py-0.5 text-[10px] font-['Bebas_Neue'] tracking-wider uppercase font-bold ${
                             inv.status === 'PAID'
-                              ? 'bg-emerald-950 text-emerald-300 border border-emerald-500/40'
-                              : 'bg-blue-950 text-blue-300 border border-blue-500/40'
+                              ? 'bg-white text-black'
+                              : 'bg-[#cc0000] text-white'
                           }`}
                         >
                           {inv.status}
                         </span>
                       </td>
-                      <td className="py-3 px-4 text-slate-200 font-bold">{formatCurrency(inv.grandTotal)}</td>
-                      <td className="py-3 px-4 font-bold text-amber-400">{formatCurrency(inv.amountDue)}</td>
+                      <td className="py-3 px-4 text-white font-bold">{formatCurrency(inv.grandTotal)}</td>
+                      <td className="py-3 px-4 font-bold text-[#cc0000]">{formatCurrency(inv.amountDue)}</td>
                       <td className="py-3 px-4 text-right">
                         {inv.status === 'CONFIRMED' && inv.amountDue > 0 ? (
                           <button
                             onClick={() => handlePayInvoiceOnline(inv)}
-                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold font-sans shadow transition-colors"
+                            className="con-btn !py-1 !px-3 text-xs"
                           >
-                            <DollarSign className="w-3.5 h-3.5" />
-                            Pay Now Online
+                            <span>
+                              <DollarSign className="w-3.5 h-3.5 mr-1" />
+                              PAY ONLINE
+                            </span>
                           </button>
                         ) : (
-                          <span className="text-emerald-400 text-xs font-sans flex items-center justify-end gap-1">
-                            <CheckCircle2 className="w-3.5 h-3.5" />
-                            Paid in Full
+                          <span className="text-[#f2f0eb] font-['Bebas_Neue'] text-sm tracking-wider flex items-center justify-end gap-1">
+                            <CheckCircle2 className="w-4 h-4 text-[#cc0000]" />
+                            PAID IN FULL
                           </span>
                         )}
                       </td>
@@ -353,31 +364,31 @@ export function CustomerPortalView({ onSelectInvoice }: { onSelectInvoice?: (id:
         </div>
       </div>
 
-      {/* NOVELTY #5: SELF-HEALING PAUSE-INSTEAD-OF-CHURN MODAL */}
+      {/* NOVELTY #5: SELF-HEALING PAUSE RETENTION MODAL */}
       {retentionSub && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
-          <div className="w-full max-w-lg bg-slate-950 border-2 border-emerald-500/50 rounded-2xl shadow-2xl p-6 relative">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-md">
+          <div className="w-full max-w-lg bg-[#000000] border-4 border-[#cc0000] p-6 relative">
             <div className="flex items-center gap-3 mb-4">
-              <div className="p-3 bg-purple-950/80 border border-purple-500/40 rounded-xl text-purple-300">
-                <ShieldCheck className="w-6 h-6" />
+              <div className="p-3 bg-[#cc0000] text-white">
+                <ShieldCheck className="w-8 h-8" />
               </div>
               <div>
-                <h3 className="text-lg font-bold text-slate-100 font-mono flex items-center gap-2">
-                  Pause Instead of Cancel?
-                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300">
+                <h3 className="text-2xl font-['Bebas_Neue'] tracking-wider text-white uppercase flex items-center gap-2">
+                  PAUSE INSTEAD OF CHURN?
+                  <span className="text-[10px] px-2 py-0.5 bg-white text-black font-['Bebas_Neue'] tracking-wider uppercase font-bold">
                     NOVELTY #5
                   </span>
                 </h3>
-                <p className="text-xs text-slate-400">Self-Healing Micro-Contract Retention Engine</p>
+                <p className="text-xs text-[#f2f0eb] font-mono">Self-Healing Micro-Contract Proclamation</p>
               </div>
             </div>
 
-            <div className="p-4 rounded-xl bg-slate-900 border border-slate-800 text-xs font-mono space-y-2 mb-4">
-              <p className="text-slate-300 font-sans">
-                Before closing <strong>{retentionSub.subscriptionNumber}</strong>, Brightloop can freeze billing for <strong>30 days</strong> with zero charge while preserving all your enterprise configurations and Odoo variant integrations.
+            <div className="p-4 bg-[#1a1a1a] border-l-4 border-[#cc0000] text-xs font-mono space-y-2 mb-4">
+              <p className="text-[#f2f0eb]">
+                Before terminating <strong>{retentionSub.subscriptionNumber}</strong>, Brightloop can freeze billing for <strong>30 days</strong> with $0 charge while safeguarding all your enterprise configurations and Odoo variant integrations.
               </p>
-              <div className="p-2 rounded bg-slate-950 text-emerald-400 text-[11px]">
-                Benefit: Extends contract expiry automatically by +30 days with no reactivation penalty.
+              <div className="p-2 bg-[#000000] text-[#cc0000] font-bold text-[11px] uppercase">
+                DIRECTIVE BENEFIT: Extends contract expiry automatically by +30 days with no reactivation fee.
               </div>
             </div>
 
@@ -385,16 +396,16 @@ export function CustomerPortalView({ onSelectInvoice }: { onSelectInvoice?: (id:
               <button
                 type="button"
                 onClick={() => handleAction(retentionSub.id, 'CLOSE')}
-                className="w-full sm:w-auto px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-slate-200 text-xs font-mono"
+                className="con-btn-black !py-2 !px-4 text-xs font-['Bebas_Neue'] w-full sm:w-auto"
               >
-                Proceed to Cancel Early
+                <span>PROCEED TO CANCEL</span>
               </button>
               <button
                 type="button"
                 onClick={handleAcceptSelfHealingPause}
-                className="w-full sm:w-auto px-5 py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs font-mono shadow-md transition-colors"
+                className="con-btn !py-2.5 !px-5 text-sm font-bold w-full sm:w-auto"
               >
-                Accept 30-Day Billing Freeze
+                <span>ACCEPT 30-DAY FREEZE</span>
               </button>
             </div>
           </div>
@@ -403,27 +414,27 @@ export function CustomerPortalView({ onSelectInvoice }: { onSelectInvoice?: (id:
 
       {/* Smart Ramp Upgrade Modal */}
       {smartRampModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
-          <div className="w-full max-w-md bg-slate-950 border border-emerald-500/40 rounded-2xl shadow-2xl p-6 relative">
-            <h3 className="text-base font-bold text-slate-100 font-mono mb-2">
-              Elastic Smart-Ramp Volume Optimization
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-md">
+          <div className="w-full max-w-md bg-[#000000] border-4 border-[#cc0000] p-6 relative">
+            <h3 className="text-2xl font-['Bebas_Neue'] tracking-wider text-white uppercase mb-1">
+              ELASTIC SMART-RAMP OPTIMIZATION
             </h3>
-            <p className="text-xs text-slate-400 mb-4 font-mono">
-              Volume Discount Rule: <strong className="text-emerald-400">VOL-15 (15% OFF for 10+ seats)</strong>
+            <p className="text-xs text-[#f2f0eb] mb-4 font-mono">
+              VOLUME DISCOUNT RULE: <strong className="text-[#cc0000]">VOL-15 (15% OFF FOR 10+ SEATS)</strong>
             </p>
 
-            <div className="p-3 rounded-lg bg-emerald-950/40 border border-emerald-500/30 font-mono text-xs space-y-1 mb-4">
+            <div className="p-4 bg-[#1a1a1a] border-l-4 border-[#cc0000] font-mono text-xs space-y-2 mb-4">
               <div className="flex justify-between">
-                <span>Current Seat Count:</span>
-                <span className="text-slate-200">8 Seats</span>
+                <span>CURRENT SEAT COUNT:</span>
+                <span className="text-white font-bold">8 SEATS</span>
               </div>
-              <div className="flex justify-between font-bold text-emerald-300">
-                <span>Upgraded Seat Count:</span>
-                <span>10 Seats (Unlocks Tier 2)</span>
+              <div className="flex justify-between text-[#cc0000] font-bold">
+                <span>UPGRADED SEAT COUNT:</span>
+                <span>10 SEATS (TIER 2)</span>
               </div>
-              <div className="flex justify-between text-slate-300 pt-1 border-t border-slate-800">
-                <span>Net Annual Savings:</span>
-                <span className="text-emerald-400 font-bold">$640.00 / year</span>
+              <div className="flex justify-between text-white pt-2 border-t border-[#2d2d2d]">
+                <span>NET ANNUAL SAVINGS:</span>
+                <span className="text-white font-bold text-sm">$640.00 / YEAR</span>
               </div>
             </div>
 
@@ -431,19 +442,19 @@ export function CustomerPortalView({ onSelectInvoice }: { onSelectInvoice?: (id:
               <button
                 type="button"
                 onClick={() => setSmartRampModal(false)}
-                className="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 text-xs font-mono"
+                className="con-btn-black !py-2 !px-4 text-xs font-['Bebas_Neue']"
               >
-                Close
+                <span>CLOSE</span>
               </button>
               <button
                 type="button"
                 onClick={() => {
                   setSmartRampModal(false);
-                  showToast('Smart-Ramp 10-seat configuration confirmed! 15% discount will apply on your next cycle.', 'success');
+                  showToast('SMART-RAMP 10-SEAT UPGRADE CONFIRMED! 15% DISCOUNT APPLIED.', 'success');
                 }}
-                className="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs font-mono"
+                className="con-btn !py-2 !px-5 text-xs font-bold"
               >
-                Confirm Upgrade
+                <span>CONFIRM UPGRADE</span>
               </button>
             </div>
           </div>
@@ -452,4 +463,3 @@ export function CustomerPortalView({ onSelectInvoice }: { onSelectInvoice?: (id:
     </div>
   );
 }
-

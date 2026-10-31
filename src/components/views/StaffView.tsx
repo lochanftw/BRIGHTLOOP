@@ -40,11 +40,11 @@ export function StaffView() {
   const handleAddStaffSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!isAdmin) {
-      setErrorMsg('Forbidden: Only Administrators can create staff accounts.');
+      setErrorMsg('FORBIDDEN: ONLY ADMINISTRATORS CAN PROVISION STAFF ACCOUNTS.');
       return;
     }
     if (!isPasswordValid) {
-      setErrorMsg('Password must satisfy all 4 security criteria.');
+      setErrorMsg('PASSWORD MUST SATISFY ALL 4 SECURITY CRITERIA.');
       return;
     }
 
@@ -62,7 +62,7 @@ export function StaffView() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Failed to create staff');
 
-      showToast(`Staff account created for ${data.user.fullName}!`, 'success');
+      showToast(`STAFF CADRE ACCOUNT PROVISIONED FOR ${data.user.fullName}!`, 'success');
       setOpenAddModal(false);
       setFullName('');
       setEmail('');
@@ -77,80 +77,84 @@ export function StaffView() {
 
   if (!isAdmin) {
     return (
-      <div className="p-8 rounded-2xl bg-slate-900/40 border border-slate-800 text-center font-mono">
-        <Lock className="w-12 h-12 mx-auto text-amber-400 mb-3" />
-        <h2 className="text-lg font-bold text-slate-100">Access Restricted (Admin Only)</h2>
-        <p className="text-xs text-slate-400 mt-1 max-w-md mx-auto font-sans">
-          Your current persona ({currentUser.fullName} - {currentUser.role}) does not have administrative rights to create or manage internal staff accounts.
+      <div className="p-12 bg-[#000000] border-4 border-[#cc0000] text-center font-mono space-y-4">
+        <Lock className="w-16 h-16 mx-auto text-[#cc0000]" />
+        <h2 className="text-3xl font-['Bebas_Neue'] tracking-wider text-white uppercase">
+          ACCESS RESTRICTED &bull; COMMAND RANK ONLY
+        </h2>
+        <p className="text-xs text-[#f2f0eb] max-w-md mx-auto leading-relaxed">
+          Your active persona ({currentUser.fullName} &bull; {currentUser.role}) does not hold administrative authority to provision internal staff operators.
         </p>
-        <p className="text-xs text-emerald-400 mt-4">
-          Switch to Elena Vance (ADMIN) via the top-right persona switcher to test staff creation.
+        <p className="text-xs text-[#cc0000] font-bold uppercase tracking-wider">
+          Switch to Elena Vance (ADMIN) via the top-right persona switcher to test staff provisioning.
         </p>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8 font-['Roboto_Condensed']">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-800">
+      <div className="bg-[#000000] p-6 border-b-4 border-[#cc0000] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-bold tracking-tight text-slate-100 font-mono">
-              Staff RBAC & Identity Administration
+          <div className="flex items-center gap-2 mb-1">
+            <h1 className="text-3xl sm:text-4xl font-['Bebas_Neue'] tracking-wider text-white uppercase transform -rotate-1 origin-left">
+              STAFF CADRE ADMINISTRATION // <span className="text-[#cc0000]">RBAC SOVEREIGNTY</span>
             </h1>
-            <span className="px-2 py-0.5 rounded text-[11px] font-mono bg-rose-950/80 border border-rose-500/40 text-rose-300">
+            <span className="px-2 py-0.5 bg-[#cc0000] text-white text-[11px] font-['Bebas_Neue'] tracking-widest uppercase">
               ADMIN ONLY
             </span>
           </div>
-          <p className="text-xs text-slate-400 mt-1">
-            Scene 1: Manage internal operators, billing controllers, and enforce password security policies.
+          <p className="text-xs text-[#f2f0eb] font-mono">
+            Scene 1: Internal Operators &bull; Permission Boundaries &bull; Password Policy Enforcement
           </p>
         </div>
 
         <button
           onClick={() => setOpenAddModal(true)}
-          className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold font-mono shadow-sm transition-colors"
+          className="con-btn !py-2.5 !px-5 text-sm"
         >
-          <UserPlus className="w-4 h-4" />
-          Add Internal Staff Member
+          <span>
+            <UserPlus className="w-4 h-4 mr-1.5" />
+            PROVISION STAFF OPERATOR
+          </span>
         </button>
       </div>
 
       {/* Staff Table */}
-      <div className="bg-slate-900/50 border border-slate-800 rounded-xl overflow-hidden shadow-sm">
+      <div className="bg-[#2d2d2d] border-l-6 border-[#cc0000] shadow-xl overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-xs text-left font-mono">
-            <thead className="bg-slate-950 text-slate-400 uppercase text-[10px] border-b border-slate-800">
+            <thead className="bg-[#000000] text-[#f2f0eb] uppercase font-['Bebas_Neue'] tracking-wider text-sm border-b-2 border-[#cc0000]">
               <tr>
-                <th className="py-3 px-4">Staff Member</th>
-                <th className="py-3 px-4">Corporate Email</th>
-                <th className="py-3 px-4">Assigned Role</th>
-                <th className="py-3 px-4">Department</th>
-                <th className="py-3 px-4">Status</th>
+                <th className="py-3 px-4">STAFF OPERATOR</th>
+                <th className="py-3 px-4">CORPORATE EMAIL</th>
+                <th className="py-3 px-4">ASSIGNED ROLE</th>
+                <th className="py-3 px-4">DEPARTMENT</th>
+                <th className="py-3 px-4">STATE</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-800">
+            <tbody className="divide-y divide-[#1a1a1a]">
               {staffList.map((u) => (
-                <tr key={u.id} className="hover:bg-slate-800/40 transition-colors">
-                  <td className="py-3 px-4 font-bold text-slate-200 font-sans">{u.fullName}</td>
-                  <td className="py-3 px-4 text-emerald-400">{u.email}</td>
+                <tr key={u.id} className="hover:bg-[#1a1a1a] transition-colors">
+                  <td className="py-3 px-4 font-bold text-white font-sans text-sm">{u.fullName}</td>
+                  <td className="py-3 px-4 text-[#cc0000] font-bold">{u.email}</td>
                   <td className="py-3 px-4">
                     <span
-                      className={`px-2 py-0.5 rounded text-[10px] font-bold ${
+                      className={`px-2.5 py-0.5 text-[10px] font-['Bebas_Neue'] tracking-wider uppercase font-bold ${
                         u.role === 'ADMIN'
-                          ? 'bg-rose-950 text-rose-300 border border-rose-500/40'
-                          : 'bg-blue-950 text-blue-300 border border-blue-500/40'
+                          ? 'bg-[#cc0000] text-white'
+                          : 'bg-white text-black'
                       }`}
                     >
                       {u.role}
                     </span>
                   </td>
-                  <td className="py-3 px-4 text-slate-400">{u.department || 'Operations'}</td>
+                  <td className="py-3 px-4 text-[#f2f0eb] uppercase">{u.department || 'Operations'}</td>
                   <td className="py-3 px-4">
-                    <span className="inline-flex items-center gap-1 text-emerald-400 font-semibold text-[11px]">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                      Active
+                    <span className="text-[#f2f0eb] font-['Bebas_Neue'] text-sm tracking-wider flex items-center gap-1">
+                      <span className="w-2 h-2 bg-[#cc0000] animate-pulse" />
+                      ACTIVE
                     </span>
                   </td>
                 </tr>
@@ -162,52 +166,52 @@ export function StaffView() {
 
       {/* Add Staff Modal */}
       {openAddModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm">
-          <div className="w-full max-w-md bg-slate-950 border border-slate-800 rounded-2xl shadow-2xl p-6 relative">
-            <h2 className="text-lg font-bold text-slate-100 font-mono mb-1">
-              Add Internal Staff Member
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-md">
+          <div className="w-full max-w-md bg-[#000000] border-4 border-[#cc0000] p-6 relative font-mono text-xs">
+            <h2 className="text-2xl font-['Bebas_Neue'] tracking-wider text-white uppercase mb-1">
+              PROVISION INTERNAL OPERATOR
             </h2>
-            <p className="text-xs text-slate-400 mb-4">
-              Staff members can run batch billing, manage quotes, and reconcile bank deposits.
+            <p className="text-xs text-[#f2f0eb] mb-4">
+              Staff accounts can execute billing runs, manage quotes, and reconcile wires.
             </p>
 
             {errorMsg && (
-              <div className="mb-4 p-3 rounded-lg bg-rose-950/50 border border-rose-500/30 text-rose-300 text-xs">
+              <div className="mb-4 p-3 bg-[#cc0000] text-white font-bold text-xs uppercase">
                 {errorMsg}
               </div>
             )}
 
-            <form onSubmit={handleAddStaffSubmit} className="space-y-3.5">
+            <form onSubmit={handleAddStaffSubmit} className="space-y-4">
               <div>
-                <label className="block text-xs font-mono text-slate-300 mb-1">Full Name</label>
+                <label className="block text-[#f2f0eb] uppercase mb-1">FULL NAME</label>
                 <input
                   type="text"
                   required
                   placeholder="Jordan Vance"
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-lg text-xs font-mono text-slate-100 focus:outline-none focus:border-emerald-500"
+                  className="w-full px-3 py-2 bg-[#1a1a1a] border border-[#2d2d2d] text-white focus:outline-none focus:border-[#cc0000]"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-mono text-slate-300 mb-1">Corporate Email</label>
+                <label className="block text-[#f2f0eb] uppercase mb-1">CORPORATE EMAIL</label>
                 <input
                   type="email"
                   required
                   placeholder="jordan.vance@brightloop.io"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-lg text-xs font-mono text-slate-100 focus:outline-none focus:border-emerald-500"
+                  className="w-full px-3 py-2 bg-[#1a1a1a] border border-[#2d2d2d] text-white focus:outline-none focus:border-[#cc0000]"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-mono text-slate-300 mb-1">Department</label>
+                <label className="block text-[#f2f0eb] uppercase mb-1">DEPARTMENT</label>
                 <select
                   value={department}
                   onChange={(e) => setDepartment(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-lg text-xs font-mono text-slate-100 focus:outline-none focus:border-emerald-500"
+                  className="w-full px-3 py-2 bg-[#1a1a1a] border border-[#2d2d2d] text-white focus:outline-none focus:border-[#cc0000]"
                 >
                   <option value="Operations">Revenue Operations</option>
                   <option value="Finance">Treasury & Accounting</option>
@@ -216,14 +220,14 @@ export function StaffView() {
               </div>
 
               <div>
-                <label className="block text-xs font-mono text-slate-300 mb-1">Secure Staff Password</label>
+                <label className="block text-[#f2f0eb] uppercase mb-1">PASSWORD POLICY VALIDATOR</label>
                 <input
                   type="password"
                   required
-                  placeholder="BrightloopStaff@2026"
+                  placeholder="StaffSecurePass@2026"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-lg text-xs font-mono text-slate-100 focus:outline-none focus:border-emerald-500"
+                  className="w-full px-3 py-2 bg-[#1a1a1a] border border-[#2d2d2d] text-white focus:outline-none focus:border-[#cc0000]"
                 />
                 <PasswordStrengthMeter password={password} onValidChange={setIsPasswordValid} />
               </div>
@@ -232,16 +236,16 @@ export function StaffView() {
                 <button
                   type="button"
                   onClick={() => setOpenAddModal(false)}
-                  className="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 text-xs font-mono"
+                  className="con-btn-black !py-2 !px-4 text-xs font-['Bebas_Neue']"
                 >
-                  Cancel
+                  <span>CANCEL</span>
                 </button>
                 <button
                   type="submit"
                   disabled={loading || !isPasswordValid}
-                  className="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold font-mono shadow-sm disabled:opacity-50"
+                  className="con-btn !py-2 !px-5 text-xs font-bold disabled:opacity-50"
                 >
-                  {loading ? 'Creating...' : 'Provision Staff Account'}
+                  <span>PROVISION OPERATOR</span>
                 </button>
               </div>
             </form>
@@ -251,4 +255,3 @@ export function StaffView() {
     </div>
   );
 }
-

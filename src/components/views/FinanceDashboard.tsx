@@ -13,7 +13,8 @@ import {
   Send,
   Zap,
   BarChart3,
-  Calendar
+  Calendar,
+  Flame
 } from 'lucide-react';
 
 interface TelemetryData {
@@ -46,7 +47,6 @@ export function FinanceDashboard({ onSelectTab }: { onSelectTab?: (tab: string) 
   const [overdueInvoices, setOverdueInvoices] = useState<any[]>([]);
 
   const fetchTelemetry = async () => {
-    const start = performance.now();
     try {
       const res = await fetch(`/api/benchmark?period=${timeRange}`);
       const data = await res.json();
@@ -55,7 +55,6 @@ export function FinanceDashboard({ onSelectTab }: { onSelectTab?: (tab: string) 
         setQueryLatencyMs(data.telemetry.queryLatencyMs);
       }
 
-      // Fetch overdue invoices for dunning quick actions
       const invRes = await fetch('/api/invoices?status=CONFIRMED');
       const invData = await invRes.json();
       const today = new Date().toISOString().split('T')[0];
@@ -81,198 +80,197 @@ export function FinanceDashboard({ onSelectTab }: { onSelectTab?: (tab: string) 
       });
       if (res.ok) {
         await refreshOutbox();
-        showToast(`Dunning notice dispatched for ${invoiceNumber}`, 'success');
+        showToast(`DUNNING DISPATCH EXECUTED FOR ${invoiceNumber}`, 'success');
       }
     } catch {
-      showToast('Failed to dispatch reminder', 'error');
+      showToast('FAILED TO DISPATCH REMINDER', 'error');
     }
   };
 
   return (
-    <div className="space-y-6">
-      {/* Title & Filter Bar */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-800">
-        <div>
-          <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-bold tracking-tight text-slate-100 font-mono">
-              Finance Executive Command Center
-            </h1>
-            <span className="px-2 py-0.5 rounded text-[11px] font-mono bg-emerald-950/80 border border-emerald-500/40 text-emerald-300">
-              Live Real-Time
-            </span>
-          </div>
-          <p className="text-xs text-slate-400 mt-1">
-            End-of-month revenue reconciliation, MRR/ARR run-rate, and sub-2-second telemetry radar.
-          </p>
-        </div>
+    <div className="space-y-8 font-['Roboto_Condensed']">
+      {/* Constructivist Hero Section */}
+      <div className="relative bg-[#000000] p-8 border-b-4 border-[#cc0000] overflow-hidden">
+        {/* Angled Red Wedge in background */}
+        <div className="absolute top-0 right-0 w-96 h-full bg-[#cc0000] opacity-15 transform -skew-x-12 origin-top-right pointer-events-none" />
 
-        {/* Multi-Dimensional Filter Controls */}
-        <div className="flex flex-wrap items-center gap-2">
-          {/* Time Filter */}
-          <div className="flex items-center gap-1 bg-slate-900 border border-slate-800 rounded-lg p-1 text-xs">
-            <span className="text-slate-500 px-2 flex items-center gap-1">
-              <Calendar className="w-3.5 h-3.5" />
-              Period:
+        <div className="relative z-10 flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+          <div>
+            <div className="flex items-center gap-2 mb-2">
+              <span className="px-2.5 py-0.5 bg-[#cc0000] text-white font-['Bebas_Neue'] text-sm tracking-widest uppercase">
+                SCENE 7 &bull; COMMAND CENTER
+              </span>
+              <span className="text-xs uppercase tracking-widest text-[#6b6b6b] font-mono">
+                SLA: &lt; 200 MS ACTIVE
+              </span>
+            </div>
+
+            <h1 className="text-4xl sm:text-6xl font-['Bebas_Neue'] tracking-wider text-white uppercase transform -rotate-1 origin-left">
+              FINANCE LEAD <span className="text-[#cc0000]">COMMAND DESK</span>
+            </h1>
+
+            <p className="text-sm text-[#f2f0eb] max-w-2xl mt-2 font-normal leading-relaxed">
+              Design is construction. Every cent, invoice, and renewal cycle forged into an immutable double-entry ledger with sub-second execution.
+            </p>
+          </div>
+
+          {/* Constructivist Filter Controls */}
+          <div className="flex flex-wrap items-center gap-2 bg-[#1a1a1a] p-2 border border-[#2d2d2d]">
+            <span className="font-['Bebas_Neue'] text-sm text-[#cc0000] px-2 uppercase tracking-wider">
+              PERIOD:
             </span>
             {['ALL', 'THIS_MONTH', 'LAST_MONTH', 'Q4'].map((t) => (
               <button
                 key={t}
                 onClick={() => setTimeRange(t)}
-                className={`px-2.5 py-1 rounded font-mono text-[11px] transition-colors ${
-                  timeRange === t ? 'bg-emerald-600 text-white font-semibold' : 'text-slate-400 hover:text-slate-200'
+                className={`px-3 py-1 font-['Bebas_Neue'] text-sm tracking-wider uppercase transition-all ${
+                  timeRange === t
+                    ? 'bg-[#cc0000] text-white font-bold transform -skew-x-6'
+                    : 'text-[#f2f0eb] hover:bg-[#2d2d2d]'
                 }`}
               >
-                {t === 'ALL' ? 'All Time' : t === 'THIS_MONTH' ? 'This Month' : t === 'LAST_MONTH' ? 'Last Month' : 'This Quarter'}
+                <span className={timeRange === t ? 'transform skew-x-6 inline-block' : ''}>
+                  {t === 'ALL' ? 'ALL TIME' : t === 'THIS_MONTH' ? 'THIS MONTH' : t === 'LAST_MONTH' ? 'LAST MONTH' : 'Q4 HARVEST'}
+                </span>
               </button>
             ))}
+
+            <select
+              value={brandFilter}
+              onChange={(e) => setBrandFilter(e.target.value)}
+              className="px-2.5 py-1 bg-[#000000] border border-[#2d2d2d] text-xs font-['Roboto_Condensed'] uppercase text-white focus:outline-none focus:border-[#cc0000]"
+            >
+              <option value="ALL">ALL VARIANTS</option>
+              <option value="ODOO">BRAND: ODOO (+560)</option>
+              <option value="STANDARD">BRAND: STANDARD (+0)</option>
+            </select>
           </div>
-
-          {/* Billing Frequency Filter */}
-          <select
-            value={billingFreq}
-            onChange={(e) => setBillingFreq(e.target.value)}
-            className="px-2.5 py-1.5 bg-slate-900 border border-slate-800 rounded-lg text-xs text-slate-300 font-mono focus:outline-none focus:border-emerald-500"
-          >
-            <option value="ALL">All Frequencies</option>
-            <option value="DAILY">Daily Plans</option>
-            <option value="WEEKLY">Weekly Plans</option>
-            <option value="MONTHLY">Monthly Plans</option>
-            <option value="YEARLY">Yearly Master</option>
-          </select>
-
-          {/* Brand Variant Filter */}
-          <select
-            value={brandFilter}
-            onChange={(e) => setBrandFilter(e.target.value)}
-            className="px-2.5 py-1.5 bg-slate-900 border border-slate-800 rounded-lg text-xs text-slate-300 font-mono focus:outline-none focus:border-emerald-500"
-          >
-            <option value="ALL">All Variants</option>
-            <option value="ODOO">Brand: Odoo (+560)</option>
-            <option value="STANDARD">Brand: Standard (+0)</option>
-            <option value="CLOUD">Brand: Cloud (+1200)</option>
-          </select>
         </div>
       </div>
 
-      {/* Top Telemetry KPI Grid */}
+      {/* Top Telemetry KPI Grid in Constructivist Card Style */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
         {/* Active Subscriptions */}
-        <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800 hover:border-slate-700 transition-colors">
-          <div className="flex items-center justify-between text-slate-400 mb-2">
-            <span className="text-xs font-medium">Active Subscriptions</span>
-            <Layers className="w-4 h-4 text-emerald-400" />
+        <div className="con-card con-wedge p-5 bg-[#2d2d2d] border-l-4 border-[#cc0000]">
+          <div className="flex items-center justify-between text-[#6b6b6b] mb-1 font-['Bebas_Neue'] text-sm tracking-wider uppercase">
+            <span>ACTIVE SUBSCRIPTIONS</span>
+            <Layers className="w-4 h-4 text-[#cc0000]" />
           </div>
-          <div className="text-2xl font-bold font-mono text-slate-100 tabular-nums">
+          <div className="text-4xl font-['Bebas_Neue'] tracking-wider text-white tabular-nums">
             {telemetry?.activeSubsCount ?? 0}
           </div>
-          <div className="text-[11px] text-slate-400 mt-1 flex items-center justify-between font-mono">
-            <span>Paused: {telemetry?.pausedSubsCount ?? 0}</span>
-            <span>Quotes: {telemetry?.quotedSubsCount ?? 0}</span>
+          <div className="text-xs text-[#6b6b6b] uppercase mt-2 font-mono flex items-center justify-between border-t border-[#1a1a1a] pt-1">
+            <span>PAUSED: {telemetry?.pausedSubsCount ?? 0}</span>
+            <span>QUOTES: {telemetry?.quotedSubsCount ?? 0}</span>
           </div>
         </div>
 
         {/* MRR & ARR */}
-        <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800 hover:border-slate-700 transition-colors">
-          <div className="flex items-center justify-between text-slate-400 mb-2">
-            <span className="text-xs font-medium">Monthly Recurring (MRR)</span>
-            <TrendingUp className="w-4 h-4 text-emerald-400" />
+        <div className="con-card con-wedge p-5 bg-[#2d2d2d] border-l-4 border-[#cc0000]">
+          <div className="flex items-center justify-between text-[#6b6b6b] mb-1 font-['Bebas_Neue'] text-sm tracking-wider uppercase">
+            <span>MONTHLY RECURRING (MRR)</span>
+            <TrendingUp className="w-4 h-4 text-[#cc0000]" />
           </div>
-          <div className="text-2xl font-bold font-mono text-emerald-400 tabular-nums">
+          <div className="text-4xl font-['Bebas_Neue'] tracking-wider text-[#cc0000] tabular-nums">
             {formatCurrency(telemetry?.mrr ?? 0)}
           </div>
-          <div className="text-[11px] text-slate-400 mt-1 font-mono">
-            ARR Run-Rate: <span className="text-slate-200 font-semibold">{formatCurrency(telemetry?.arr ?? 0)}</span>
+          <div className="text-xs text-[#f2f0eb] uppercase mt-2 font-mono border-t border-[#1a1a1a] pt-1">
+            ARR RUN-RATE: <strong className="text-white">{formatCurrency(telemetry?.arr ?? 0)}</strong>
           </div>
         </div>
 
         {/* Cash Collected */}
-        <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800 hover:border-slate-700 transition-colors">
-          <div className="flex items-center justify-between text-slate-400 mb-2">
-            <span className="text-xs font-medium">Cash Collected (Cash-In)</span>
-            <DollarSign className="w-4 h-4 text-emerald-400" />
+        <div className="con-card con-wedge p-5 bg-[#2d2d2d] border-l-4 border-[#cc0000]">
+          <div className="flex items-center justify-between text-[#6b6b6b] mb-1 font-['Bebas_Neue'] text-sm tracking-wider uppercase">
+            <span>CASH COLLECTED</span>
+            <DollarSign className="w-4 h-4 text-[#cc0000]" />
           </div>
-          <div className="text-2xl font-bold font-mono text-slate-100 tabular-nums">
+          <div className="text-4xl font-['Bebas_Neue'] tracking-wider text-white tabular-nums">
             {formatCurrency(telemetry?.collectedCash ?? 0)}
           </div>
-          <div className="text-[11px] text-emerald-400 mt-1 font-mono flex items-center gap-1">
-            <ArrowUpRight className="w-3 h-3" />
-            100% Verified via Bank Ledger
+          <div className="text-xs text-[#cc0000] uppercase mt-2 font-mono flex items-center gap-1 border-t border-[#1a1a1a] pt-1 font-bold">
+            <ArrowUpRight className="w-3.5 h-3.5" />
+            100% VERIFIED LEDGER
           </div>
         </div>
 
         {/* Outstanding AR */}
-        <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800 hover:border-slate-700 transition-colors">
-          <div className="flex items-center justify-between text-slate-400 mb-2">
-            <span className="text-xs font-medium">Outstanding AR (Unpaid)</span>
-            <Clock className="w-4 h-4 text-amber-400" />
+        <div className="con-card con-wedge p-5 bg-[#2d2d2d] border-l-4 border-[#c45522]">
+          <div className="flex items-center justify-between text-[#6b6b6b] mb-1 font-['Bebas_Neue'] text-sm tracking-wider uppercase">
+            <span>OUTSTANDING AR</span>
+            <Clock className="w-4 h-4 text-[#c45522]" />
           </div>
-          <div className="text-2xl font-bold font-mono text-amber-300 tabular-nums">
+          <div className="text-4xl font-['Bebas_Neue'] tracking-wider text-[#c45522] tabular-nums">
             {formatCurrency(telemetry?.outstandingAR ?? 0)}
           </div>
-          <div className="text-[11px] text-slate-400 mt-1 font-mono">
-            Current + Past Due Balances
+          <div className="text-xs text-[#6b6b6b] uppercase mt-2 font-mono border-t border-[#1a1a1a] pt-1">
+            CURRENT + PAST DUE
           </div>
         </div>
 
-        {/* Overdue Radar */}
-        <div className="p-4 rounded-xl bg-rose-950/20 border border-rose-500/30 hover:border-rose-500/50 transition-colors">
-          <div className="flex items-center justify-between text-rose-300 mb-2">
-            <span className="text-xs font-semibold">Overdue Invoices Alert</span>
-            <AlertCircle className="w-4 h-4 text-rose-400" />
+        {/* Overdue Alert Card */}
+        <div className="con-card con-wedge p-5 bg-[#000000] border-l-4 border-[#cc0000]">
+          <div className="flex items-center justify-between text-[#cc0000] mb-1 font-['Bebas_Neue'] text-sm tracking-wider uppercase font-bold">
+            <span>OVERDUE RADAR</span>
+            <AlertCircle className="w-4 h-4 text-[#cc0000]" />
           </div>
-          <div className="text-2xl font-bold font-mono text-rose-400 tabular-nums">
+          <div className="text-4xl font-['Bebas_Neue'] tracking-wider text-[#cc0000] tabular-nums">
             {formatCurrency(telemetry?.overdueAmount ?? 0)}
           </div>
-          <div className="text-[11px] text-rose-300/80 mt-1 font-mono">
-            {telemetry?.overdueCount ?? 0} Invoices Past Due Date
+          <div className="text-xs text-[#f2f0eb] uppercase mt-2 font-mono border-t border-[#1a1a1a] pt-1">
+            {telemetry?.overdueCount ?? 0} INVOICES PAST DUE
           </div>
         </div>
       </div>
 
-      {/* AR Aging Buckets & Variant Margin Breakdown */}
+      {/* AR Aging Buckets & Variant Margin Impact */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* AR Aging Buckets */}
-        <div className="lg:col-span-2 p-5 rounded-xl bg-slate-900/50 border border-slate-800">
-          <div className="flex items-center justify-between mb-4">
+        {/* AR Aging Schedule */}
+        <div className="lg:col-span-2 p-6 bg-[#2d2d2d] border-l-6 border-[#cc0000] relative">
+          <div className="flex items-center justify-between mb-4 border-b border-[#1a1a1a] pb-3">
             <div className="flex items-center gap-2">
-              <BarChart3 className="w-4 h-4 text-emerald-400" />
-              <h3 className="text-sm font-semibold text-slate-100">Accounts Receivable Aging Schedule</h3>
+              <BarChart3 className="w-5 h-5 text-[#cc0000]" />
+              <h2 className="text-2xl font-['Bebas_Neue'] tracking-wider text-white uppercase">
+                ACCOUNTS RECEIVABLE AGING RADAR
+              </h2>
             </div>
-            <span className="text-xs font-mono text-slate-400">Total: {formatCurrency(telemetry?.outstandingAR ?? 0)}</span>
+            <span className="font-mono text-xs text-[#f2f0eb] bg-[#000000] px-3 py-1 border border-[#cc0000]">
+              TOTAL: {formatCurrency(telemetry?.outstandingAR ?? 0)}
+            </span>
           </div>
 
-          <div className="grid grid-cols-4 gap-3">
-            <div className="p-3 rounded-lg bg-slate-950 border border-slate-800">
-              <span className="text-[11px] text-slate-400 block mb-1">Current (Not Due)</span>
-              <span className="text-base font-bold font-mono text-emerald-400">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 font-mono">
+            <div className="p-3 bg-[#1a1a1a] border-l-2 border-white">
+              <span className="text-[10px] text-[#6b6b6b] uppercase block">CURRENT (NOT DUE)</span>
+              <span className="text-xl font-bold font-['Bebas_Neue'] tracking-wider text-white">
                 {formatCurrency(telemetry?.aging?.current ?? 0)}
               </span>
             </div>
 
-            <div className="p-3 rounded-lg bg-slate-950 border border-slate-800">
-              <span className="text-[11px] text-slate-400 block mb-1">1–30 Days Overdue</span>
-              <span className="text-base font-bold font-mono text-amber-400">
+            <div className="p-3 bg-[#1a1a1a] border-l-2 border-[#f2f0eb]">
+              <span className="text-[10px] text-[#6b6b6b] uppercase block">1–30 DAYS OVERDUE</span>
+              <span className="text-xl font-bold font-['Bebas_Neue'] tracking-wider text-[#f2f0eb]">
                 {formatCurrency(telemetry?.aging?.days1_30 ?? 0)}
               </span>
             </div>
 
-            <div className="p-3 rounded-lg bg-slate-950 border border-slate-800">
-              <span className="text-[11px] text-slate-400 block mb-1">31–60 Days Overdue</span>
-              <span className="text-base font-bold font-mono text-orange-400">
+            <div className="p-3 bg-[#1a1a1a] border-l-2 border-[#c45522]">
+              <span className="text-[10px] text-[#c45522] uppercase block">31–60 DAYS OVERDUE</span>
+              <span className="text-xl font-bold font-['Bebas_Neue'] tracking-wider text-[#c45522]">
                 {formatCurrency(telemetry?.aging?.days31_60 ?? 0)}
               </span>
             </div>
 
-            <div className="p-3 rounded-lg bg-slate-950 border border-rose-900/40 bg-rose-950/10">
-              <span className="text-[11px] text-rose-300 block mb-1">60+ Days Overdue</span>
-              <span className="text-base font-bold font-mono text-rose-400">
+            <div className="p-3 bg-[#000000] border-l-4 border-[#cc0000]">
+              <span className="text-[10px] text-[#cc0000] uppercase block font-bold">60+ DAYS CRITICAL</span>
+              <span className="text-xl font-bold font-['Bebas_Neue'] tracking-wider text-[#cc0000]">
                 {formatCurrency(telemetry?.aging?.days60Plus ?? 0)}
               </span>
             </div>
           </div>
 
           {/* Aging Visual Bar */}
-          <div className="mt-4 h-2.5 w-full bg-slate-800 rounded-full overflow-hidden flex">
+          <div className="mt-6 h-4 w-full bg-[#000000] border border-[#1a1a1a] overflow-hidden flex">
             <div
               style={{
                 width: `${
@@ -281,7 +279,7 @@ export function FinanceDashboard({ onSelectTab }: { onSelectTab?: (tab: string) 
                     : 100
                 }%`,
               }}
-              className="bg-emerald-500 h-full transition-all"
+              className="bg-white h-full"
               title="Current"
             />
             <div
@@ -292,7 +290,7 @@ export function FinanceDashboard({ onSelectTab }: { onSelectTab?: (tab: string) 
                     : 0
                 }%`,
               }}
-              className="bg-amber-500 h-full transition-all"
+              className="bg-[#e8e0d0] h-full"
               title="1-30 Days"
             />
             <div
@@ -303,7 +301,7 @@ export function FinanceDashboard({ onSelectTab }: { onSelectTab?: (tab: string) 
                     : 0
                 }%`,
               }}
-              className="bg-orange-500 h-full transition-all"
+              className="bg-[#c45522] h-full"
               title="31-60 Days"
             />
             <div
@@ -314,111 +312,115 @@ export function FinanceDashboard({ onSelectTab }: { onSelectTab?: (tab: string) 
                     : 0
                 }%`,
               }}
-              className="bg-rose-500 h-full transition-all"
+              className="bg-[#cc0000] h-full"
               title="60+ Days"
             />
           </div>
         </div>
 
         {/* Dynamic Variant Contribution (Odoo +560 Impact) */}
-        <div className="p-5 rounded-xl bg-slate-900/50 border border-slate-800 flex flex-col justify-between">
+        <div className="p-6 bg-[#2d2d2d] border-l-6 border-[#cc0000] flex flex-col justify-between">
           <div>
-            <div className="flex items-center justify-between mb-3">
-              <h3 className="text-sm font-semibold text-slate-100">Dynamic Variant Margin Impact</h3>
-              <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-950 border border-emerald-500/40 text-emerald-300 font-mono">
-                ODOD (+560.00)
+            <div className="flex items-center justify-between mb-3 border-b border-[#1a1a1a] pb-2">
+              <h3 className="text-2xl font-['Bebas_Neue'] tracking-wider text-white uppercase">
+                VARIANT MARGIN ENGINE
+              </h3>
+              <span className="px-2 py-0.5 bg-[#cc0000] text-white font-['Bebas_Neue'] text-xs tracking-wider">
+                ODOO (+560.00)
               </span>
             </div>
-            <p className="text-xs text-slate-400 mb-4">
-              Evaluating the gross margin delta across the flagship Core ERP Suite.
+            <p className="text-xs text-[#f2f0eb] mb-4">
+              Real-time gross margin calculation comparing base catalog to specialized enterprise variants.
             </p>
 
             <div className="space-y-3 font-mono text-xs">
-              <div className="p-2.5 rounded-lg bg-slate-950 border border-slate-800 flex items-center justify-between">
+              <div className="p-3 bg-[#1a1a1a] border-l-4 border-[#cc0000] flex items-center justify-between">
                 <div>
-                  <div className="font-semibold text-slate-200">Brand: Odoo Variant</div>
-                  <div className="text-[10px] text-slate-500">Base $1,200 + $560 = $1,760</div>
+                  <div className="font-bold text-white uppercase">Brand: Odoo Variant</div>
+                  <div className="text-[10px] text-[#6b6b6b]">Base $1,200 + $560 = $1,760</div>
                 </div>
                 <div className="text-right">
-                  <div className="text-emerald-400 font-bold">80.1% Margin</div>
-                  <div className="text-[10px] text-slate-400">+$1,410.00 net</div>
+                  <div className="text-[#cc0000] font-bold text-base font-['Bebas_Neue']">80.1% MARGIN</div>
+                  <div className="text-[10px] text-[#f2f0eb]">+$1,410.00 NET</div>
                 </div>
               </div>
 
-              <div className="p-2.5 rounded-lg bg-slate-950 border border-slate-800 flex items-center justify-between">
+              <div className="p-3 bg-[#1a1a1a] border-l-2 border-white flex items-center justify-between">
                 <div>
-                  <div className="font-semibold text-slate-200">Brand: Standard</div>
-                  <div className="text-[10px] text-slate-500">Base $1,200 + $0 = $1,200</div>
+                  <div className="font-bold text-white uppercase">Brand: Standard</div>
+                  <div className="text-[10px] text-[#6b6b6b]">Base $1,200 + $0 = $1,200</div>
                 </div>
                 <div className="text-right">
-                  <div className="text-slate-300 font-bold">70.8% Margin</div>
-                  <div className="text-[10px] text-slate-400">+$850.00 net</div>
+                  <div className="text-white font-bold text-base font-['Bebas_Neue']">70.8% MARGIN</div>
+                  <div className="text-[10px] text-[#6b6b6b]">+$850.00 NET</div>
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="pt-3 border-t border-slate-800 mt-4 flex items-center justify-between text-xs text-slate-400">
-            <span>Composite Variant Delta Engine</span>
-            <span className="text-emerald-400 font-mono font-semibold">Active & Indexed</span>
+          <div className="pt-3 border-t border-[#1a1a1a] mt-4 flex items-center justify-between text-xs text-[#6b6b6b] font-mono">
+            <span>COMPOSITE ENGINE</span>
+            <span className="text-[#cc0000] font-bold uppercase">100% ACID VERIFIED</span>
           </div>
         </div>
       </div>
 
       {/* Overdue Dunning Worklist */}
-      <div className="p-5 rounded-xl bg-slate-900/50 border border-slate-800">
-        <div className="flex items-center justify-between mb-4">
+      <div className="p-6 bg-[#2d2d2d] border-l-6 border-[#cc0000]">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4 border-b border-[#1a1a1a] pb-3">
           <div>
-            <h3 className="text-sm font-semibold text-slate-100 flex items-center gap-2">
-              <AlertCircle className="w-4 h-4 text-rose-400" />
-              Overdue Collections Radar & 1-Click Dunning Worklist
-            </h3>
-            <p className="text-xs text-slate-400 mt-0.5">
-              Chase past-due accounts directly with automated notice dispatch into the Simulated Outbox.
+            <h2 className="text-2xl font-['Bebas_Neue'] tracking-wider text-white uppercase flex items-center gap-2">
+              <AlertCircle className="w-5 h-5 text-[#cc0000]" />
+              OVERDUE AR DUNNING QUEUE
+            </h2>
+            <p className="text-xs text-[#f2f0eb]">
+              Direct proclamation and notification to debtor accounts dispatched via Simulated SMTP Outbox.
             </p>
           </div>
           {onSelectTab && (
             <button
               onClick={() => onSelectTab('invoices')}
-              className="text-xs text-emerald-400 hover:underline font-mono"
+              className="text-xs font-['Bebas_Neue'] tracking-wider text-[#cc0000] hover:text-white uppercase flex items-center gap-1"
             >
-              View All Invoices →
+              INSPECT ALL INVOICES &rarr;
             </button>
           )}
         </div>
 
         {overdueInvoices.length === 0 ? (
-          <div className="text-center py-8 text-slate-500 text-xs font-mono">
-            No overdue invoices at this time. All confirmed receivables are current!
+          <div className="text-center py-8 text-[#6b6b6b] text-xs font-mono uppercase">
+            No overdue accounts detected. All current invoices compliant!
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-xs text-left font-mono">
-              <thead className="bg-slate-950 text-slate-400 uppercase text-[10px] border-b border-slate-800">
+              <thead className="bg-[#000000] text-[#f2f0eb] uppercase font-['Bebas_Neue'] tracking-wider text-sm border-b-2 border-[#cc0000]">
                 <tr>
-                  <th className="py-2.5 px-3">Invoice #</th>
-                  <th className="py-2.5 px-3">Customer</th>
-                  <th className="py-2.5 px-3">Due Date</th>
-                  <th className="py-2.5 px-3">Total Amount</th>
-                  <th className="py-2.5 px-3">Amount Owed</th>
-                  <th className="py-2.5 px-3 text-right">Action</th>
+                  <th className="py-3 px-4">INVOICE #</th>
+                  <th className="py-3 px-4">CUSTOMER</th>
+                  <th className="py-3 px-4">DUE DATE</th>
+                  <th className="py-3 px-4">TOTAL</th>
+                  <th className="py-3 px-4">BALANCE DUE</th>
+                  <th className="py-3 px-4 text-right">DIRECTIVE</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800">
+              <tbody className="divide-y divide-[#1a1a1a]">
                 {overdueInvoices.map((inv) => (
-                  <tr key={inv.id} className="hover:bg-slate-800/40">
-                    <td className="py-2.5 px-3 font-semibold text-slate-200">{inv.invoiceNumber}</td>
-                    <td className="py-2.5 px-3 text-slate-300 font-sans">{inv.customerName}</td>
-                    <td className="py-2.5 px-3 text-rose-400 font-semibold">{inv.dueDate}</td>
-                    <td className="py-2.5 px-3 text-slate-300">{formatCurrency(inv.grandTotal)}</td>
-                    <td className="py-2.5 px-3 text-rose-300 font-bold">{formatCurrency(inv.amountDue)}</td>
-                    <td className="py-2.5 px-3 text-right">
+                  <tr key={inv.id} className="hover:bg-[#1a1a1a] transition-colors">
+                    <td className="py-3 px-4 font-bold text-white">{inv.invoiceNumber}</td>
+                    <td className="py-3 px-4 text-[#f2f0eb] font-sans">{inv.customerName}</td>
+                    <td className="py-3 px-4 text-[#cc0000] font-bold">{inv.dueDate}</td>
+                    <td className="py-3 px-4 text-white">{formatCurrency(inv.grandTotal)}</td>
+                    <td className="py-3 px-4 text-[#cc0000] font-bold">{formatCurrency(inv.amountDue)}</td>
+                    <td className="py-3 px-4 text-right">
                       <button
                         onClick={() => handleSendDunning(inv.id, inv.invoiceNumber)}
-                        className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-rose-600 hover:bg-rose-500 text-white text-[11px] font-sans font-medium transition-colors"
+                        className="con-btn !py-1.5 !px-3 text-xs"
                       >
-                        <Send className="w-3 h-3" />
-                        Send Dunning Reminder
+                        <span>
+                          <Send className="w-3 h-3 mr-1" />
+                          DISPATCH NOTICE
+                        </span>
                       </button>
                     </td>
                   </tr>
@@ -431,4 +433,3 @@ export function FinanceDashboard({ onSelectTab }: { onSelectTab?: (tab: string) 
     </div>
   );
 }
-

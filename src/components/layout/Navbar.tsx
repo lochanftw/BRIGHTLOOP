@@ -52,144 +52,167 @@ export function Navbar({
   const isCustomer = currentUser.role === 'CUSTOMER';
 
   return (
-    <header className="sticky top-0 z-40 bg-slate-950/90 backdrop-blur-md border-b border-slate-800/80">
+    <header className="sticky top-0 z-40 bg-[#000000] border-b-2 border-[#cc0000] shadow-2xl relative">
+      {/* Constructivist Bottom Angular Accent */}
+      <div className="absolute bottom-0 left-0 w-56 h-1 bg-[#cc0000] transform -skew-x-[25deg] origin-bottom-left" />
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          {/* Left: Brand & Status */}
+        <div className="flex items-center justify-between h-20">
+          {/* Left: Brand & Constructivist Monolith */}
           <div className="flex items-center gap-6">
             <div className="flex items-center gap-3">
-              <div className="relative flex items-center justify-center w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-700 shadow-lg shadow-emerald-950/50">
-                <Activity className="w-5 h-5 text-white animate-pulse" />
-                <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-emerald-400 border-2 border-slate-950" />
+              <div className="relative flex items-center justify-center w-11 h-11 bg-[#cc0000] text-white shadow-lg transform -skew-x-6">
+                <span className="font-['Bebas_Neue'] text-2xl tracking-tighter transform skew-x-6 font-bold">
+                  BL
+                </span>
+                <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-white border border-[#000000]" />
               </div>
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="text-base font-bold tracking-tight text-slate-100 font-mono">
-                    BRIGHTLOOP<span className="text-emerald-400 font-sans font-light">OS</span>
+                  <span className="text-2xl font-bold tracking-wider text-white font-['Bebas_Neue']">
+                    BRIGHTLOOP<span className="text-[#cc0000]">.OS</span>
                   </span>
-                  <span className="hidden sm:inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-mono font-medium bg-emerald-950/80 border border-emerald-500/30 text-emerald-300">
-                    SUB-2S SLA
+                  <span className="hidden sm:inline-flex items-center px-2 py-0.5 text-[11px] font-['Bebas_Neue'] bg-[#cc0000] text-white tracking-widest uppercase transform -skew-x-6">
+                    <span className="transform skew-x-6">REVOLUTIONARY SPEED</span>
                   </span>
                 </div>
-                <div className="text-[10px] text-slate-400 font-mono hidden sm:block">
-                  Autonomous Recurring Revenue Operating System
+                <div className="text-[11px] text-[#6b6b6b] uppercase font-['Roboto_Condensed'] tracking-wider hidden sm:block">
+                  Autonomous Recurring Revenue Engine // Moscow 1921 &middot; SF 2026
                 </div>
               </div>
             </div>
 
-            {/* Navigation Tabs */}
-            <nav className="hidden md:flex items-center space-x-1 pl-4 border-l border-slate-800">
+            {/* Navigation Links in Bebas Neue */}
+            <nav className="hidden xl:flex items-center space-x-1 pl-4 border-l border-[#2d2d2d]">
               {!isCustomer ? (
                 <>
                   <button
                     onClick={() => setCurrentTab('finance')}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
+                    className={`flex items-center gap-1.5 px-3 py-2 text-sm font-['Bebas_Neue'] tracking-wider uppercase transition-all ${
                       currentTab === 'finance'
-                        ? 'bg-slate-800 text-emerald-400 shadow-sm'
-                        : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900'
+                        ? 'bg-[#cc0000] text-white transform -skew-x-6'
+                        : 'text-[#f2f0eb] hover:text-[#cc0000] hover:bg-[#1a1a1a]'
                     }`}
                   >
-                    <Activity className="w-3.5 h-3.5" />
-                    Finance Command
+                    <span className={currentTab === 'finance' ? 'transform skew-x-6 inline-flex items-center gap-1.5' : 'inline-flex items-center gap-1.5'}>
+                      <Activity className="w-4 h-4" />
+                      Finance Command
+                    </span>
                   </button>
 
                   <button
                     onClick={() => setCurrentTab('subscriptions')}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
+                    className={`flex items-center gap-1.5 px-3 py-2 text-sm font-['Bebas_Neue'] tracking-wider uppercase transition-all ${
                       currentTab === 'subscriptions'
-                        ? 'bg-slate-800 text-emerald-400 shadow-sm'
-                        : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900'
+                        ? 'bg-[#cc0000] text-white transform -skew-x-6'
+                        : 'text-[#f2f0eb] hover:text-[#cc0000] hover:bg-[#1a1a1a]'
                     }`}
                   >
-                    <Layers className="w-3.5 h-3.5" />
-                    Subscriptions
+                    <span className={currentTab === 'subscriptions' ? 'transform skew-x-6 inline-flex items-center gap-1.5' : 'inline-flex items-center gap-1.5'}>
+                      <Layers className="w-4 h-4" />
+                      Subscriptions
+                    </span>
                   </button>
 
                   <button
                     onClick={() => setCurrentTab('billing-day')}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
+                    className={`flex items-center gap-1.5 px-3 py-2 text-sm font-['Bebas_Neue'] tracking-wider uppercase transition-all ${
                       currentTab === 'billing-day'
-                        ? 'bg-slate-800 text-emerald-400 shadow-sm'
-                        : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900'
+                        ? 'bg-[#cc0000] text-white transform -skew-x-6'
+                        : 'text-[#f2f0eb] hover:text-[#cc0000] hover:bg-[#1a1a1a]'
                     }`}
                   >
-                    <Calendar className="w-3.5 h-3.5" />
-                    Billing Day
+                    <span className={currentTab === 'billing-day' ? 'transform skew-x-6 inline-flex items-center gap-1.5' : 'inline-flex items-center gap-1.5'}>
+                      <Calendar className="w-4 h-4" />
+                      Billing Day
+                    </span>
                   </button>
 
                   <button
                     onClick={() => setCurrentTab('invoices')}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
+                    className={`flex items-center gap-1.5 px-3 py-2 text-sm font-['Bebas_Neue'] tracking-wider uppercase transition-all ${
                       currentTab === 'invoices'
-                        ? 'bg-slate-800 text-emerald-400 shadow-sm'
-                        : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900'
+                        ? 'bg-[#cc0000] text-white transform -skew-x-6'
+                        : 'text-[#f2f0eb] hover:text-[#cc0000] hover:bg-[#1a1a1a]'
                     }`}
                   >
-                    <FileText className="w-3.5 h-3.5" />
-                    Invoices & AR
+                    <span className={currentTab === 'invoices' ? 'transform skew-x-6 inline-flex items-center gap-1.5' : 'inline-flex items-center gap-1.5'}>
+                      <FileText className="w-4 h-4" />
+                      Invoices & AR
+                    </span>
                   </button>
 
                   <button
                     onClick={() => setCurrentTab('payments')}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
+                    className={`flex items-center gap-1.5 px-3 py-2 text-sm font-['Bebas_Neue'] tracking-wider uppercase transition-all ${
                       currentTab === 'payments'
-                        ? 'bg-slate-800 text-emerald-400 shadow-sm'
-                        : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900'
+                        ? 'bg-[#cc0000] text-white transform -skew-x-6'
+                        : 'text-[#f2f0eb] hover:text-[#cc0000] hover:bg-[#1a1a1a]'
                     }`}
                   >
-                    <CreditCard className="w-3.5 h-3.5" />
-                    Payments & AI Matcher
+                    <span className={currentTab === 'payments' ? 'transform skew-x-6 inline-flex items-center gap-1.5' : 'inline-flex items-center gap-1.5'}>
+                      <CreditCard className="w-4 h-4" />
+                      Payments & AI Matcher
+                    </span>
                   </button>
 
                   <button
                     onClick={() => setCurrentTab('catalog')}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
+                    className={`flex items-center gap-1.5 px-3 py-2 text-sm font-['Bebas_Neue'] tracking-wider uppercase transition-all ${
                       currentTab === 'catalog'
-                        ? 'bg-slate-800 text-emerald-400 shadow-sm'
-                        : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900'
+                        ? 'bg-[#cc0000] text-white transform -skew-x-6'
+                        : 'text-[#f2f0eb] hover:text-[#cc0000] hover:bg-[#1a1a1a]'
                     }`}
                   >
-                    <Package className="w-3.5 h-3.5" />
-                    Catalog & Pricing
-                    {!isAdmin && <Lock className="w-3 h-3 text-amber-400" />}
+                    <span className={currentTab === 'catalog' ? 'transform skew-x-6 inline-flex items-center gap-1.5' : 'inline-flex items-center gap-1.5'}>
+                      <Package className="w-4 h-4" />
+                      Catalog
+                      {!isAdmin && <Lock className="w-3 h-3 text-[#c45522]" />}
+                    </span>
                   </button>
 
                   <button
                     onClick={() => setCurrentTab('staff')}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
+                    className={`flex items-center gap-1.5 px-3 py-2 text-sm font-['Bebas_Neue'] tracking-wider uppercase transition-all ${
                       currentTab === 'staff'
-                        ? 'bg-slate-800 text-emerald-400 shadow-sm'
-                        : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900'
+                        ? 'bg-[#cc0000] text-white transform -skew-x-6'
+                        : 'text-[#f2f0eb] hover:text-[#cc0000] hover:bg-[#1a1a1a]'
                     }`}
                   >
-                    <Users className="w-3.5 h-3.5" />
-                    Staff RBAC
-                    {!isAdmin && <Lock className="w-3 h-3 text-amber-400" />}
+                    <span className={currentTab === 'staff' ? 'transform skew-x-6 inline-flex items-center gap-1.5' : 'inline-flex items-center gap-1.5'}>
+                      <Users className="w-4 h-4" />
+                      Staff
+                      {!isAdmin && <Lock className="w-3 h-3 text-[#c45522]" />}
+                    </span>
                   </button>
                 </>
               ) : (
                 <>
                   <button
                     onClick={() => setCurrentTab('customer-portal')}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
+                    className={`flex items-center gap-1.5 px-4 py-2 text-sm font-['Bebas_Neue'] tracking-wider uppercase transition-all ${
                       currentTab === 'customer-portal'
-                        ? 'bg-slate-800 text-emerald-400 shadow-sm'
-                        : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900'
+                        ? 'bg-[#cc0000] text-white transform -skew-x-6'
+                        : 'text-[#f2f0eb] hover:text-[#cc0000] hover:bg-[#1a1a1a]'
                     }`}
                   >
-                    <Compass className="w-3.5 h-3.5" />
-                    My Subscriptions & Plan Controls
+                    <span className={currentTab === 'customer-portal' ? 'transform skew-x-6 inline-flex items-center gap-1.5' : 'inline-flex items-center gap-1.5'}>
+                      <Compass className="w-4 h-4" />
+                      My Subscriptions & Plan Controls
+                    </span>
                   </button>
                   <button
                     onClick={() => setCurrentTab('customer-invoices')}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
+                    className={`flex items-center gap-1.5 px-4 py-2 text-sm font-['Bebas_Neue'] tracking-wider uppercase transition-all ${
                       currentTab === 'customer-invoices'
-                        ? 'bg-slate-800 text-emerald-400 shadow-sm'
-                        : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900'
+                        ? 'bg-[#cc0000] text-white transform -skew-x-6'
+                        : 'text-[#f2f0eb] hover:text-[#cc0000] hover:bg-[#1a1a1a]'
                     }`}
                   >
-                    <FileText className="w-3.5 h-3.5" />
-                    My Invoices & Online Payments
+                    <span className={currentTab === 'customer-invoices' ? 'transform skew-x-6 inline-flex items-center gap-1.5' : 'inline-flex items-center gap-1.5'}>
+                      <FileText className="w-4 h-4" />
+                      My Invoices & Online Checkout
+                    </span>
                   </button>
                 </>
               )}
@@ -198,80 +221,81 @@ export function Navbar({
 
           {/* Right: Controls & Persona Switcher */}
           <div className="flex items-center gap-3">
-            {/* Live SLA Telemetry HUD Pill */}
-            <div className="hidden lg:flex items-center gap-2 px-2.5 py-1 rounded-full bg-slate-900 border border-slate-800 font-mono text-[11px]">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-              <span className="text-slate-400">Query Latency:</span>
-              <span className="text-emerald-400 font-bold">{queryLatencyMs} ms</span>
-              <span className="text-slate-600">|</span>
-              <span className="text-slate-400">SLA &lt;2000ms:</span>
-              <span className="text-emerald-400 font-semibold">PASS</span>
+            {/* Constructivist SLA Telemetry HUD */}
+            <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 bg-[#1a1a1a] border-l-4 border-[#cc0000] font-mono text-xs">
+              <span className="w-2 h-2 bg-[#cc0000] animate-ping" />
+              <span className="text-[#6b6b6b] uppercase">LATENCY:</span>
+              <span className="text-[#ffffff] font-bold">{queryLatencyMs} MS</span>
+              <span className="text-[#6b6b6b]">/</span>
+              <span className="text-[#cc0000] font-bold">SLA PASS</span>
             </div>
 
             {/* Benchmark Trigger Button */}
             <button
               onClick={onBenchmarkRun}
               disabled={isBenchmarking}
-              title="Seed 2,500 subscriptions and 5,000 invoices to test high-volume performance"
-              className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-emerald-950/60 border border-emerald-500/40 text-emerald-300 hover:bg-emerald-900/60 text-xs font-mono font-medium transition-all shadow-sm disabled:opacity-50"
+              title="Seed 2,500 subscriptions and 5,000 invoices"
+              className="con-btn !py-2 !px-3 text-sm !bg-[#cc0000] hover:!bg-[#990000] disabled:opacity-50"
             >
-              <Zap className="w-3.5 h-3.5 text-emerald-400" />
-              {isBenchmarking ? 'Simulating...' : '2.5k Bench'}
+              <span>
+                <Zap className="w-4 h-4 mr-1 text-white" />
+                {isBenchmarking ? 'SIMULATING...' : '2.5K BENCH'}
+              </span>
             </button>
 
             {/* Reset Database Button */}
             <button
               onClick={onResetData}
               title="Reset all memory data back to initial seed state"
-              className="p-1.5 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-slate-200 transition-colors"
+              className="p-2.5 bg-[#1a1a1a] hover:bg-[#cc0000] text-[#f2f0eb] hover:text-white transition-colors border border-[#2d2d2d]"
             >
               <RefreshCw className="w-4 h-4" />
             </button>
 
-            {/* Simulated Email Outbox Drawer Button */}
+            {/* Simulated Email Outbox Button */}
             <button
               onClick={() => setOpenOutbox(true)}
-              className="relative p-2 rounded-lg bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-300 hover:text-slate-100 transition-colors"
+              className="relative p-2.5 bg-[#1a1a1a] hover:bg-[#cc0000] text-[#f2f0eb] hover:text-white border border-[#2d2d2d] transition-colors"
               title="Open In-App Simulated Email Outbox"
             >
               <Mail className="w-4 h-4" />
               {unreadEmailsCount > 0 && (
-                <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-emerald-500 text-[10px] font-bold text-slate-950">
+                <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center bg-[#cc0000] text-[10px] font-bold text-white font-mono">
                   {unreadEmailsCount}
                 </span>
               )}
             </button>
 
-            {/* Persona & RBAC Switcher Dropdown */}
+            {/* Persona Switcher Dropdown */}
             <div className="relative">
               <button
                 onClick={() => setPersonaOpen(!personaOpen)}
-                className="flex items-center gap-2 pl-2.5 pr-2 py-1.5 rounded-lg bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-200 text-xs transition-colors"
+                className="flex items-center gap-2 px-3 py-2 bg-[#1a1a1a] border-l-2 border-[#cc0000] hover:bg-[#2d2d2d] text-white text-xs transition-colors"
               >
-                <div className="w-2 h-2 rounded-full bg-emerald-400" />
-                <div className="text-left font-mono">
-                  <div className="font-semibold leading-tight flex items-center gap-1.5">
+                <div className="w-2.5 h-2.5 bg-[#cc0000] transform rotate-45" />
+                <div className="text-left font-['Roboto_Condensed']">
+                  <div className="font-bold flex items-center gap-1.5 uppercase tracking-wider">
                     {currentUser.fullName}
                     <span
-                      className={`text-[9px] px-1.5 py-0.2 rounded font-sans font-bold uppercase tracking-wider ${
+                      className={`text-[9px] px-1.5 py-0.2 font-['Bebas_Neue'] tracking-wider ${
                         isAdmin
-                          ? 'bg-rose-500/20 text-rose-300 border border-rose-500/30'
+                          ? 'bg-[#cc0000] text-white'
                           : isStaff
-                          ? 'bg-blue-500/20 text-blue-300 border border-blue-500/30'
-                          : 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+                          ? 'bg-[#2d2d2d] text-white border border-[#cc0000]'
+                          : 'bg-[#f2f0eb] text-black font-bold'
                       }`}
                     >
                       {currentUser.role}
                     </span>
                   </div>
                 </div>
-                <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
+                <ChevronDown className="w-3.5 h-3.5 text-[#6b6b6b]" />
               </button>
 
               {personaOpen && (
-                <div className="absolute right-0 mt-2 w-64 rounded-xl bg-slate-950 border border-slate-800 shadow-2xl p-2 z-50 animate-in fade-in zoom-in-95">
-                  <div className="px-2 py-1.5 text-[10px] font-mono uppercase tracking-wider text-slate-500 border-b border-slate-800 mb-1">
-                    Demo Persona Switcher (RBAC)
+                <div className="absolute right-0 mt-2 w-72 bg-[#000000] border-2 border-[#cc0000] shadow-2xl p-2 z-50">
+                  <div className="px-2 py-1 text-[11px] font-['Bebas_Neue'] uppercase tracking-widest text-[#6b6b6b] border-b border-[#2d2d2d] mb-1">
+                    ACTIVE PERSONA CONTROLLER (RBAC)
                   </div>
 
                   <button
@@ -280,15 +304,15 @@ export function Navbar({
                       setCurrentTab('finance');
                       setPersonaOpen(false);
                     }}
-                    className={`w-full text-left px-3 py-2 rounded-lg text-xs flex items-center justify-between transition-colors ${
-                      isAdmin ? 'bg-emerald-950/60 text-emerald-300 border border-emerald-500/30' : 'hover:bg-slate-900 text-slate-300'
+                    className={`w-full text-left px-3 py-2.5 text-xs flex items-center justify-between transition-colors border-l-4 ${
+                      isAdmin ? 'bg-[#1a1a1a] border-[#cc0000] text-white' : 'border-transparent hover:bg-[#1a1a1a] text-[#f2f0eb]'
                     }`}
                   >
                     <div>
-                      <div className="font-semibold text-slate-100">Elena Vance</div>
-                      <div className="text-[10px] text-slate-400">ADMIN (Full Platform Control)</div>
+                      <div className="font-bold text-white font-['Bebas_Neue'] text-sm tracking-wider">Elena Vance</div>
+                      <div className="text-[10px] text-[#6b6b6b] uppercase">ADMIN (Full Platform Command)</div>
                     </div>
-                    {isAdmin && <UserCheck className="w-4 h-4 text-emerald-400" />}
+                    {isAdmin && <UserCheck className="w-4 h-4 text-[#cc0000]" />}
                   </button>
 
                   <button
@@ -297,15 +321,15 @@ export function Navbar({
                       setCurrentTab('subscriptions');
                       setPersonaOpen(false);
                     }}
-                    className={`w-full text-left px-3 py-2 rounded-lg text-xs flex items-center justify-between transition-colors ${
-                      isStaff ? 'bg-emerald-950/60 text-emerald-300 border border-emerald-500/30' : 'hover:bg-slate-900 text-slate-300'
+                    className={`w-full text-left px-3 py-2.5 text-xs flex items-center justify-between transition-colors border-l-4 ${
+                      isStaff ? 'bg-[#1a1a1a] border-[#cc0000] text-white' : 'border-transparent hover:bg-[#1a1a1a] text-[#f2f0eb]'
                     }`}
                   >
                     <div>
-                      <div className="font-semibold text-slate-100">Marcus Chen</div>
-                      <div className="text-[10px] text-slate-400">INTERNAL_STAFF (Operations)</div>
+                      <div className="font-bold text-white font-['Bebas_Neue'] text-sm tracking-wider">Marcus Chen</div>
+                      <div className="text-[10px] text-[#6b6b6b] uppercase">INTERNAL_STAFF (Operations)</div>
                     </div>
-                    {isStaff && <UserCheck className="w-4 h-4 text-emerald-400" />}
+                    {isStaff && <UserCheck className="w-4 h-4 text-[#cc0000]" />}
                   </button>
 
                   <button
@@ -314,28 +338,28 @@ export function Navbar({
                       setCurrentTab('customer-portal');
                       setPersonaOpen(false);
                     }}
-                    className={`w-full text-left px-3 py-2 rounded-lg text-xs flex items-center justify-between transition-colors ${
-                      isCustomer ? 'bg-emerald-950/60 text-emerald-300 border border-emerald-500/30' : 'hover:bg-slate-900 text-slate-300'
+                    className={`w-full text-left px-3 py-2.5 text-xs flex items-center justify-between transition-colors border-l-4 ${
+                      isCustomer ? 'bg-[#1a1a1a] border-[#cc0000] text-white' : 'border-transparent hover:bg-[#1a1a1a] text-[#f2f0eb]'
                     }`}
                   >
                     <div>
-                      <div className="font-semibold text-slate-100">Acme Corporation</div>
-                      <div className="text-[10px] text-slate-400">CUSTOMER (Self-Service Portal)</div>
+                      <div className="font-bold text-white font-['Bebas_Neue'] text-sm tracking-wider">Acme Corporation</div>
+                      <div className="text-[10px] text-[#6b6b6b] uppercase">CUSTOMER (Self-Service Portal)</div>
                     </div>
-                    {isCustomer && <UserCheck className="w-4 h-4 text-emerald-400" />}
+                    {isCustomer && <UserCheck className="w-4 h-4 text-[#cc0000]" />}
                   </button>
 
-                  <div className="border-t border-slate-800 my-1 pt-1">
+                  <div className="border-t border-[#2d2d2d] my-1 pt-1 space-y-1">
                     <button
                       onClick={() => {
                         setAuthModalMode('SIGNUP');
                         setOpenAuthModal(true);
                         setPersonaOpen(false);
                       }}
-                      className="w-full text-left px-3 py-1.5 rounded-lg text-xs text-emerald-400 hover:bg-slate-900 flex items-center gap-1.5"
+                      className="w-full text-left px-3 py-1.5 text-xs font-['Bebas_Neue'] tracking-wider text-[#cc0000] hover:bg-[#1a1a1a] flex items-center gap-1.5"
                     >
                       <Sparkles className="w-3.5 h-3.5" />
-                      Test New Customer Sign-Up
+                      TEST NEW CUSTOMER REGISTRATION
                     </button>
                     <button
                       onClick={() => {
@@ -343,9 +367,9 @@ export function Navbar({
                         setOpenAuthModal(true);
                         setPersonaOpen(false);
                       }}
-                      className="w-full text-left px-3 py-1.5 rounded-lg text-xs text-slate-400 hover:bg-slate-900"
+                      className="w-full text-left px-3 py-1.5 text-xs font-['Bebas_Neue'] tracking-wider text-[#6b6b6b] hover:text-white hover:bg-[#1a1a1a]"
                     >
-                      Test Forgot Password Flow
+                      TEST PASSWORD RESET TOKEN FLOW
                     </button>
                   </div>
                 </div>
@@ -355,61 +379,61 @@ export function Navbar({
         </div>
 
         {/* Mobile Tab Scroller */}
-        <div className="md:hidden flex items-center space-x-1 py-2 overflow-x-auto border-t border-slate-800/60">
+        <div className="xl:hidden flex items-center space-x-1 py-2 overflow-x-auto border-t border-[#2d2d2d]">
           {!isCustomer ? (
             <>
               <button
                 onClick={() => setCurrentTab('finance')}
-                className={`px-2.5 py-1 rounded text-xs shrink-0 ${
-                  currentTab === 'finance' ? 'bg-slate-800 text-emerald-400' : 'text-slate-400'
+                className={`px-3 py-1 text-xs font-['Bebas_Neue'] tracking-wider uppercase shrink-0 ${
+                  currentTab === 'finance' ? 'bg-[#cc0000] text-white' : 'text-[#f2f0eb]'
                 }`}
               >
                 Finance
               </button>
               <button
                 onClick={() => setCurrentTab('subscriptions')}
-                className={`px-2.5 py-1 rounded text-xs shrink-0 ${
-                  currentTab === 'subscriptions' ? 'bg-slate-800 text-emerald-400' : 'text-slate-400'
+                className={`px-3 py-1 text-xs font-['Bebas_Neue'] tracking-wider uppercase shrink-0 ${
+                  currentTab === 'subscriptions' ? 'bg-[#cc0000] text-white' : 'text-[#f2f0eb]'
                 }`}
               >
                 Subscriptions
               </button>
               <button
                 onClick={() => setCurrentTab('billing-day')}
-                className={`px-2.5 py-1 rounded text-xs shrink-0 ${
-                  currentTab === 'billing-day' ? 'bg-slate-800 text-emerald-400' : 'text-slate-400'
+                className={`px-3 py-1 text-xs font-['Bebas_Neue'] tracking-wider uppercase shrink-0 ${
+                  currentTab === 'billing-day' ? 'bg-[#cc0000] text-white' : 'text-[#f2f0eb]'
                 }`}
               >
                 Billing Day
               </button>
               <button
                 onClick={() => setCurrentTab('invoices')}
-                className={`px-2.5 py-1 rounded text-xs shrink-0 ${
-                  currentTab === 'invoices' ? 'bg-slate-800 text-emerald-400' : 'text-slate-400'
+                className={`px-3 py-1 text-xs font-['Bebas_Neue'] tracking-wider uppercase shrink-0 ${
+                  currentTab === 'invoices' ? 'bg-[#cc0000] text-white' : 'text-[#f2f0eb]'
                 }`}
               >
                 Invoices
               </button>
               <button
                 onClick={() => setCurrentTab('payments')}
-                className={`px-2.5 py-1 rounded text-xs shrink-0 ${
-                  currentTab === 'payments' ? 'bg-slate-800 text-emerald-400' : 'text-slate-400'
+                className={`px-3 py-1 text-xs font-['Bebas_Neue'] tracking-wider uppercase shrink-0 ${
+                  currentTab === 'payments' ? 'bg-[#cc0000] text-white' : 'text-[#f2f0eb]'
                 }`}
               >
                 Payments
               </button>
               <button
                 onClick={() => setCurrentTab('catalog')}
-                className={`px-2.5 py-1 rounded text-xs shrink-0 ${
-                  currentTab === 'catalog' ? 'bg-slate-800 text-emerald-400' : 'text-slate-400'
+                className={`px-3 py-1 text-xs font-['Bebas_Neue'] tracking-wider uppercase shrink-0 ${
+                  currentTab === 'catalog' ? 'bg-[#cc0000] text-white' : 'text-[#f2f0eb]'
                 }`}
               >
                 Catalog
               </button>
               <button
                 onClick={() => setCurrentTab('staff')}
-                className={`px-2.5 py-1 rounded text-xs shrink-0 ${
-                  currentTab === 'staff' ? 'bg-slate-800 text-emerald-400' : 'text-slate-400'
+                className={`px-3 py-1 text-xs font-['Bebas_Neue'] tracking-wider uppercase shrink-0 ${
+                  currentTab === 'staff' ? 'bg-[#cc0000] text-white' : 'text-[#f2f0eb]'
                 }`}
               >
                 Staff
@@ -419,16 +443,16 @@ export function Navbar({
             <>
               <button
                 onClick={() => setCurrentTab('customer-portal')}
-                className={`px-2.5 py-1 rounded text-xs shrink-0 ${
-                  currentTab === 'customer-portal' ? 'bg-slate-800 text-emerald-400' : 'text-slate-400'
+                className={`px-3 py-1 text-xs font-['Bebas_Neue'] tracking-wider uppercase shrink-0 ${
+                  currentTab === 'customer-portal' ? 'bg-[#cc0000] text-white' : 'text-[#f2f0eb]'
                 }`}
               >
                 My Subscriptions
               </button>
               <button
                 onClick={() => setCurrentTab('customer-invoices')}
-                className={`px-2.5 py-1 rounded text-xs shrink-0 ${
-                  currentTab === 'customer-invoices' ? 'bg-slate-800 text-emerald-400' : 'text-slate-400'
+                className={`px-3 py-1 text-xs font-['Bebas_Neue'] tracking-wider uppercase shrink-0 ${
+                  currentTab === 'customer-invoices' ? 'bg-[#cc0000] text-white' : 'text-[#f2f0eb]'
                 }`}
               >
                 My Invoices
@@ -440,4 +464,3 @@ export function Navbar({
     </header>
   );
 }
-
