@@ -30,6 +30,7 @@ import {
   initialAuditLedger
 } from './seedData';
 import { round2, computeLedgerHash, sha256 } from '../finance/engine';
+import { saveRecord, loadAllRecords, countRecords, saveLedgerEntry } from './sqlite';
 
 class MemoryDataStore {
   public users: Map<string, User> = new Map();
@@ -77,61 +78,111 @@ class MemoryDataStore {
     this.subscriptionCustomerIndex.clear();
     this.subscriptionStatusIndex.clear();
 
-    // Load initial users
-    for (const u of initialUsers) {
-      this.users.set(u.id, { ...u });
-      this.userEmailIndex.set(u.email.toLowerCase(), u.id);
-    }
-
-    // Load products
-    for (const p of initialProducts) {
-      this.products.set(p.id, JSON.parse(JSON.stringify(p)));
-    }
-
-    // Load plans
-    for (const pl of initialPlans) {
-      this.plans.set(pl.id, { ...pl });
-    }
-
-    // Load templates
-    for (const t of initialQuotationTemplates) {
-      this.templates.set(t.id, JSON.parse(JSON.stringify(t)));
-    }
-
-    // Load tax rules
-    for (const tr of initialTaxRules) {
-      this.taxRules.set(tr.id, { ...tr });
-    }
-
-    // Load discount rules
-    for (const dr of initialDiscountRules) {
-      this.discountRules.set(dr.id, { ...dr });
-    }
-
-    // Load subscriptions & index them
-    for (const sub of initialSubscriptions) {
-      this.subscriptions.set(sub.id, JSON.parse(JSON.stringify(sub)));
-      this.indexSubscription(sub);
-    }
-
-    // Load invoices & index them
-    for (const inv of initialInvoices) {
-      this.invoices.set(inv.id, JSON.parse(JSON.stringify(inv)));
-      this.invoiceCycleKeyIndex.set(inv.billingCycleKey, inv.id);
-      if (inv.ledgerHash) {
-        this.lastLedgerHash = inv.ledgerHash;
+    const existingSubsCount = countRecords('subscriptions');
+    if (existingSubsCount > 0) {
+      // Hydrate from SQLite persistent relational engine
+      const dbUsers = loadAllRecords<User>('users');
+      for (const u of dbUsers) {
+        this.users.set(u.id, u);
+        this.userEmailIndex.set(u.email.toLowerCase(), u.id);
       }
-    }
+      const dbProducts = loadAllRecords<Product>('products');
+      for (const p of dbProducts) this.products.set(p.id, p);
 
-    // Load payments
-    for (const pay of initialPayments) {
-      this.payments.set(pay.id, { ...pay });
-    }
+      const dbPlans = loadAllRecords<Plan>('plans');
+      for (const pl of dbPlans) this.plans.set(pl.id, pl);
 
-    // Load emails & bank statements
-    this.emails = JSON.parse(JSON.stringify(initialEmails));
-    this.bankStatements = JSON.parse(JSON.stringify(initialBankStatements));
-    this.auditLedger = JSON.parse(JSON.stringify(initialAuditLedger));
+      const dbTemplates = loadAllRecords<QuotationTemplate>('templates');
+      for (const t of dbTemplates) this.templates.set(t.id, t);
+
+      const dbTaxRules = loadAllRecords<TaxRule>('taxRules');
+      for (const tr of dbTaxRules) this.taxRules.set(tr.id, tr);
+
+      const dbDiscountRules = loadAllRecords<DiscountRule>('discountRules');
+      for (const dr of dbDiscountRules) this.discountRules.set(dr.id, dr);
+
+      const dbSubscriptions = loadAllRecords<Subscription>('subscriptions');
+      for (const sub of dbSubscriptions) {
+        this.subscriptions.set(sub.id, sub);
+        this.indexSubscription(sub);
+      }
+
+      const dbInvoices = loadAllRecords<Invoice>('invoices');
+      for (const inv of dbInvoices) {
+        this.invoices.set(inv.id, inv);
+        this.invoiceCycleKeyIndex.set(inv.billingCycleKey, inv.id);
+        if (inv.ledgerHash) this.lastLedgerHash = inv.ledgerHash;
+      }
+
+      const dbPayments = loadAllRecords<Payment>('payments');
+      for (const pay of dbPayments) this.payments.set(pay.id, pay);
+
+      this.emails = loadAllRecords<SimulatedEmail>('emails');
+      this.bankStatements = loadAllRecords<BankStatementRow>('bankStatements');
+      this.auditLedger = loadAllRecords<AuditLedgerEntry>('auditLedger');
+    } else {
+      // First boot: Initialize persistent SQLite records
+      for (const u of initialUsers) {
+        this.users.set(u.id, { ...u });
+        this.userEmailIndex.set(u.email.toLowerCase(), u.id);
+        saveRecord('users', u.id, u);
+      }
+
+      for (const p of initialProducts) {
+        this.products.set(p.id, JSON.parse(JSON.stringify(p)));
+        saveRecord('products', p.id, p);
+      }
+
+      for (const pl of initialPlans) {
+        this.plans.set(pl.id, { ...pl });
+        saveRecord('plans', pl.id, pl);
+      }
+
+      for (const t of initialQuotationTemplates) {
+        this.templates.set(t.id, JSON.parse(JSON.stringify(t)));
+        saveRecord('templates', t.id, t);
+      }
+
+      for (const tr of initialTaxRules) {
+        this.taxRules.set(tr.id, { ...tr });
+        saveRecord('taxRules', tr.id, tr);
+      }
+
+      for (const dr of initialDiscountRules) {
+        this.discountRules.set(dr.id, { ...dr });
+        saveRecord('discountRules', dr.id, dr);
+      }
+
+      for (const sub of initialSubscriptions) {
+        this.subscriptions.set(sub.id, JSON.parse(JSON.stringify(sub)));
+        this.indexSubscription(sub);
+        saveRecord('subscriptions', sub.id, sub);
+      }
+
+      for (const inv of initialInvoices) {
+        this.invoices.set(inv.id, JSON.parse(JSON.stringify(inv)));
+        this.invoiceCycleKeyIndex.set(inv.billingCycleKey, inv.id);
+        if (inv.ledgerHash) this.lastLedgerHash = inv.ledgerHash;
+        saveRecord('invoices', inv.id, inv);
+        if (inv.billingCycleKey && inv.ledgerHash) {
+          saveLedgerEntry(inv.billingCycleKey, inv.id, inv.ledgerHash);
+        }
+      }
+
+      for (const pay of initialPayments) {
+        this.payments.set(pay.id, { ...pay });
+        saveRecord('payments', pay.id, pay);
+      }
+
+      this.emails = JSON.parse(JSON.stringify(initialEmails));
+      for (const em of this.emails) saveRecord('emails', em.id, em);
+
+      this.bankStatements = JSON.parse(JSON.stringify(initialBankStatements));
+      for (const bs of this.bankStatements) saveRecord('bankStatements', bs.id, bs);
+
+      this.auditLedger = JSON.parse(JSON.stringify(initialAuditLedger));
+      for (const al of this.auditLedger) saveRecord('auditLedger', al.id, al);
+    }
     this.initialized = true;
   }
 
@@ -175,6 +226,7 @@ class MemoryDataStore {
     };
     this.users.set(id, newUser);
     this.userEmailIndex.set(newUser.email, id);
+    saveRecord('users', id, newUser);
     return newUser;
   }
 
@@ -188,6 +240,7 @@ class MemoryDataStore {
     user.resetToken = token;
     user.resetTokenExpiresAt = expiresAt;
     this.users.set(user.id, user);
+    saveRecord('users', user.id, user);
 
     // Dispatch simulated email
     this.addEmail({
@@ -218,6 +271,7 @@ class MemoryDataStore {
     user.resetToken = undefined;
     user.resetTokenExpiresAt = undefined;
     this.users.set(user.id, user);
+    saveRecord('users', user.id, user);
     return user;
   }
 
@@ -234,6 +288,7 @@ class MemoryDataStore {
     const id = `prod-${Date.now()}`;
     const newProd: Product = { ...prod, id };
     this.products.set(id, newProd);
+    saveRecord('products', id, newProd);
     return newProd;
   }
 
@@ -242,6 +297,7 @@ class MemoryDataStore {
     if (!p) throw new Error('Product not found');
     const updated = { ...p, ...updates };
     this.products.set(id, updated);
+    saveRecord('products', id, updated);
     return updated;
   }
 
@@ -258,6 +314,7 @@ class MemoryDataStore {
     const id = `plan-${Date.now()}`;
     const newPlan: Plan = { ...plan, id };
     this.plans.set(id, newPlan);
+    saveRecord('plans', id, newPlan);
     return newPlan;
   }
 
@@ -266,6 +323,7 @@ class MemoryDataStore {
     if (!p) throw new Error('Plan not found');
     const updated = { ...p, ...updates };
     this.plans.set(id, updated);
+    saveRecord('plans', id, updated);
     return updated;
   }
 
@@ -470,6 +528,7 @@ class MemoryDataStore {
 
     this.subscriptions.set(id, newSub);
     this.indexSubscription(newSub);
+    saveRecord('subscriptions', id, newSub);
     return newSub;
   }
 
@@ -522,9 +581,10 @@ class MemoryDataStore {
 
     this.subscriptions.set(id, sub);
     this.indexSubscription(sub);
+    saveRecord('subscriptions', id, sub);
 
     // Audit log
-    this.auditLedger.push({
+    const auditEntry = {
       id: `audit-${Date.now()}`,
       entityType: 'SUBSCRIPTION',
       entityId: sub.id,
@@ -535,7 +595,9 @@ class MemoryDataStore {
       cryptographicHash: `sha_${Date.now()}`,
       previousHash: this.lastLedgerHash,
       createdAt: new Date().toISOString(),
-    });
+    };
+    this.auditLedger.push(auditEntry);
+    saveRecord('auditLedger', auditEntry.id, auditEntry);
 
     return sub;
   }
@@ -766,10 +828,13 @@ class MemoryDataStore {
         this.lastLedgerHash = ledgerHash;
         generatedInvoices.push(newInvoice);
         billedCount++;
+        saveRecord('invoices', invId, newInvoice);
+        saveLedgerEntry(billingCycleKey, invId, ledgerHash);
 
         // Advance nextBillingDate
         sub.nextBillingDate = periodEnd;
         this.subscriptions.set(sub.id, sub);
+        saveRecord('subscriptions', sub.id, sub);
 
         // Add to Cryptographic Audit Ledger
         this.auditLedger.push({
@@ -853,6 +918,7 @@ class MemoryDataStore {
     if (!inv) throw new Error('Invoice not found');
     inv.status = 'CONFIRMED';
     this.invoices.set(id, inv);
+    saveRecord('invoices', id, inv);
     return inv;
   }
 
@@ -861,6 +927,7 @@ class MemoryDataStore {
     if (!inv) throw new Error('Invoice not found');
     inv.status = 'CANCELLED';
     this.invoices.set(id, inv);
+    saveRecord('invoices', id, inv);
     return inv;
   }
 
@@ -869,6 +936,7 @@ class MemoryDataStore {
     if (!inv) throw new Error('Invoice not found');
     inv.sentAt = new Date().toISOString();
     this.invoices.set(id, inv);
+    saveRecord('invoices', id, inv);
 
     const email: SimulatedEmail = {
       id: `email-${Date.now()}`,
@@ -929,6 +997,7 @@ class MemoryDataStore {
     };
 
     this.payments.set(id, payment);
+    saveRecord('payments', id, payment);
 
     // Update invoice amounts
     inv.amountPaid = round2(inv.amountPaid + data.amount);
@@ -939,6 +1008,7 @@ class MemoryDataStore {
       inv.paidAt = new Date().toISOString();
     }
     this.invoices.set(inv.id, inv);
+    saveRecord('invoices', inv.id, inv);
 
     return { payment, invoice: inv };
   }
@@ -965,14 +1035,16 @@ class MemoryDataStore {
           recordedBy: actor,
         });
         row.status = 'RECONCILED';
+        saveRecord('bankStatements', row.id, row);
         return { success: true, invoice: inv };
       }
     }
     row.status = 'RECONCILED';
+    saveRecord('bankStatements', row.id, row);
     return { success: true };
   }
 
-  // --- Simulated Emails ---
+  // --- Real-time Outbox Emails ---
   public getEmails(): SimulatedEmail[] {
     return this.emails;
   }
@@ -984,12 +1056,16 @@ class MemoryDataStore {
       createdAt: new Date().toISOString(),
     };
     this.emails.unshift(newEmail);
+    saveRecord('emails', newEmail.id, newEmail);
     return newEmail;
   }
 
   public markEmailRead(id: string) {
     const email = this.emails.find((e) => e.id === id);
-    if (email) email.isRead = true;
+    if (email) {
+      email.isRead = true;
+      saveRecord('emails', email.id, email);
+    }
   }
 
   // --- Executive Financial Telemetry ---

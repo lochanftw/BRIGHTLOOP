@@ -64,7 +64,7 @@ export function InvoicesView() {
 
       if (action === 'SEND') {
         await refreshOutbox();
-        showToast('INVOICE DISPATCHED TO SIMULATED EMAIL OUTBOX!', 'success');
+        showToast('INVOICE DISPATCHED TO OUTBOX!', 'success');
       } else {
         showToast(`INVOICE STATUS UPDATED: ${action}`, 'success');
       }
@@ -230,7 +230,7 @@ export function InvoicesView() {
                               <button
                                 onClick={() => handleAction(inv.id, 'SEND')}
                                 className="con-btn-black !py-1 !px-2 text-xs font-['Bebas_Neue']"
-                                title="Send notice to simulated outbox"
+                                title="Send notice to outbox"
                               >
                                 <Send className="w-3 h-3" />
                               </button>

@@ -215,7 +215,7 @@ export interface Payment {
   recordedBy: string;
 }
 
-export interface SimulatedEmail {
+export interface OutboxEmail {
   id: string;
   toEmail: string;
   subject: string;
@@ -225,6 +225,8 @@ export interface SimulatedEmail {
   createdAt: string;
   isRead: boolean;
 }
+
+export type SimulatedEmail = OutboxEmail;
 
 export interface AuditLedgerEntry {
   id: string;

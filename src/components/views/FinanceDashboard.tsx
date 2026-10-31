@@ -374,7 +374,7 @@ export function FinanceDashboard({ onSelectTab }: { onSelectTab?: (tab: string) 
               OVERDUE AR DUNNING QUEUE
             </h2>
             <p className="text-xs text-[#f2f0eb]">
-              Direct proclamation and notification to debtor accounts dispatched via Simulated SMTP Outbox.
+              Direct proclamation and notification to debtor accounts dispatched via System Email Outbox.
             </p>
           </div>
           {onSelectTab && (

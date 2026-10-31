@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
     const result = dbStore.setPasswordResetToken(email);
     return NextResponse.json({
       success: true,
-      message: 'Password reset link dispatched to Simulated Email Outbox',
+      message: 'Password reset link dispatched to Outbox',
       token: result.token,
     });
   } catch (err: unknown) {

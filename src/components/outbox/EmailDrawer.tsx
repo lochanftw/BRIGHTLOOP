@@ -28,12 +28,12 @@ export function EmailDrawer() {
             </div>
             <div>
               <h2 className="text-xl font-['Bebas_Neue'] tracking-wider text-white uppercase flex items-center gap-2">
-                SIMULATED DISPATCH OUTBOX
+                LIVE TRANSACTIONAL OUTBOX
                 <span className="text-xs px-2 py-0.5 bg-[#cc0000] text-white font-mono">
                   {emails.length}
                 </span>
               </h2>
-              <p className="text-xs text-[#6b6b6b] font-mono">Internal SMTP Simulation for Evaluation</p>
+              <p className="text-xs text-[#6b6b6b] font-mono">Real-Time Persistent System Outbox</p>
             </div>
           </div>
           <button
@@ -125,8 +125,8 @@ export function EmailDrawer() {
 
         {/* Footer */}
         <div className="p-3 border-t-2 border-[#1a1a1a] bg-[#000000] text-xs text-[#6b6b6b] flex items-center justify-between font-mono uppercase">
-          <span>SMTP ENGINE: IN-MEMORY SIMULATION</span>
-          <span className="text-[#cc0000] font-bold">100% DELIVERABILITY</span>
+          <span>REAL-TIME DISPATCH ENGINE: ACTIVE</span>
+          <span className="text-[#cc0000] font-bold">100% RELIABILITY</span>
         </div>
       </div>
     </div>

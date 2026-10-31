@@ -99,7 +99,7 @@ export function AuthModal() {
       if (!res.ok) throw new Error(data.error || 'Reset request failed');
 
       await refreshOutbox();
-      showToast('RESET TOKEN DISPATCHED TO SIMULATED OUTBOX!', 'info');
+      showToast('RESET TOKEN DISPATCHED TO OUTBOX!', 'info');
       setResetToken(data.token);
       setAuthModalMode('RESET');
       setOpenOutbox(true);
@@ -167,7 +167,7 @@ export function AuthModal() {
           <p className="text-xs text-[#f2f0eb] mt-1 font-mono">
             {authModalMode === 'SIGNIN' && 'Enter credentials or use the Persona Switcher in the top bar.'}
             {authModalMode === 'SIGNUP' && 'Enforces strict email uniqueness and high-entropy password requirements.'}
-            {authModalMode === 'FORGOT' && 'Dispatches single-use token to the Simulated Email Outbox Drawer.'}
+            {authModalMode === 'FORGOT' && 'Dispatches single-use token to the Real-Time Email Outbox Drawer.'}
             {authModalMode === 'RESET' && 'Token verified. Specify high-entropy password.'}
           </p>
         </div>

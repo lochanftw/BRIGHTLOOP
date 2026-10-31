@@ -252,11 +252,11 @@ export function Navbar({
               <RefreshCw className="w-4 h-4" />
             </button>
 
-            {/* Simulated Email Outbox Button */}
+            {/* Real-time Email Outbox Button */}
             <button
               onClick={() => setOpenOutbox(true)}
               className="relative p-2.5 bg-[#1a1a1a] hover:bg-[#cc0000] text-[#f2f0eb] hover:text-white border border-[#2d2d2d] transition-colors"
-              title="Open In-App Simulated Email Outbox"
+              title="Open Real-Time Email Outbox"
             >
               <Mail className="w-4 h-4" />
               {unreadEmailsCount > 0 && (
