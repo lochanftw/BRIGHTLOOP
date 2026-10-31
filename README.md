@@ -24,7 +24,7 @@ All 12 architecture, flow, review, and verification documents are available in b
 | [**IMPLEMENTATION_STATUS.md**](IMPLEMENTATION_STATUS.md) | Complete matrix of delivered capabilities across all 6 core phases |
 | [**CHANGED_FILES.md**](CHANGED_FILES.md) | Exhaustive changelog and modular directory breakdown |
 | [**EMAIL_SETUP.md**](EMAIL_SETUP.md) | In-app simulated email outbox drawer & token delivery documentation |
-| [**LANDING_PAGE_INTEGRATION.md**](LANDING_PAGE_INTEGRATION.md) | Dual landing page showcases (`landing_page_tharun` and `landing_page_hrithik`) |
+| [**LANDING_PAGE_INTEGRATION.md**](LANDING_PAGE_INTEGRATION.md) | Next.js Constructivist integrated web application portal |
 | [**LINKEDIN_NOTES.md**](LINKEDIN_NOTES.md) | Project showcase summary for hackathon presentation and portfolio |
 | [**COMPLETE_APPLICATION_PROMPT.md**](COMPLETE_APPLICATION_PROMPT.md) | Complete prompt specification and phased engineering instructions |
 
