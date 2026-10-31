@@ -250,3 +250,4 @@ export interface BankStatementRow {
   matchType?: 'EXACT' | 'SPLIT' | 'FUZZY_NAME';
   status: 'PENDING' | 'RECONCILED' | 'IGNORED';
 }
+

@@ -452,3 +452,4 @@ export function CustomerPortalView({ onSelectInvoice }: { onSelectInvoice?: (id:
     </div>
   );
 }
+

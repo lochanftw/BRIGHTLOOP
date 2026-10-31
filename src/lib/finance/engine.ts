@@ -59,3 +59,4 @@ export async function computeLedgerHash(
   const payload = `${prevHash}|${subscriptionId}|${billingCycleKey}|${grandTotal.toFixed(2)}|${timestamp}`;
   return await sha256(payload);
 }
+

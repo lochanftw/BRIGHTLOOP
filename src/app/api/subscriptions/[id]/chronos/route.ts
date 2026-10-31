@@ -17,3 +17,4 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
     return NextResponse.json({ error: message }, { status: 400 });
   }
 }
+

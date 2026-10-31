@@ -431,3 +431,4 @@ export function FinanceDashboard({ onSelectTab }: { onSelectTab?: (tab: string) 
     </div>
   );
 }
+

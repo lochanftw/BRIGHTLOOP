@@ -60,3 +60,4 @@ export function PasswordStrengthMeter({ password, onValidChange }: PasswordStren
     </div>
   );
 }
+

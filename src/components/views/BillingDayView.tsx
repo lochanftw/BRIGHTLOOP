@@ -225,3 +225,4 @@ export function BillingDayView({ onSelectInvoice }: { onSelectInvoice?: (id: str
     </div>
   );
 }
+
