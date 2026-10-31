@@ -1,4 +1,4 @@
-# Brightloop OS — Autonomous Subscription & Recurring Revenue Engine
+# Brightloop OS — Autonomous Subscription & Recurring Revenue Engine #
 
 [![CI Verification](https://github.com/lochanftw/BRIGHTLOOP/actions/workflows/verify.yml/badge.svg)](https://github.com/lochanftw/BRIGHTLOOP/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-red.svg)](https://opensource.org/licenses/MIT)
